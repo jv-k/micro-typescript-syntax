@@ -1,0 +1,103 @@
+filetype: typescript
+
+detect:
+    filename: "\\.tsx?$"
+
+rules:
+    - symbol.brackets: "[(){}]|\\[|\\]"
+    - symbol.braces: "[{}]"
+    - symbol.operator: "[-+/*=<>!~%?:&|]"
+    - symbol.punctuation: "[.,;]"
+
+    # Single line comment
+    - comment:
+        start: "//"
+        end: "$"
+        rules:
+            - todo: "(TODO:?|XXX:?|FIXME:?)"
+
+    # Multi-line comments
+    - comment:
+        start: "/\\*"
+        end: "\\*/"
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\."
+            # function documentation
+            - identifier: "\\s\\*\\s.*"
+            - todo: "(TODO:?|XXX:?|FIXME:?)"
+
+    # Keywords and statements
+    - statement: "\\b(abstract|as|async|await|break|case|catch|class|const|constructor|continue)\\b"
+    - statement: "\\b(debugger|declare|default|delete|do|else|enum|export|extends|finally|for|from)\\b"
+    - statement: "\\b(function|get|if|implements|import|in|instanceof|interface|is|let|module|namespace)\\b"
+    - statement: "\\b(new|of|package|private|protected|public|require|return|set|static|super|switch)\\b"
+    - statement: "\\b(this|throw|try|type|typeof|var|void|while|with|yield)\\b"
+    
+    # Functions and declarations
+    - statement.var: "\\b(var)\\b"
+    - statement.let: "\\b(let)\\b"
+    - statement.class: "\\b(class)\\b"
+
+    # Types
+    - type: "\\b(Array|Boolean|Date|Enumerator|Error|Function|Math)\\b"
+    - type: "\\b(Number|Object|RegExp|String|Symbol)\\b"
+    - type.types: "\\b(any|unknown|boolean|never|number|string|symbol)\\b"
+
+    # Constants and literals
+    - constant: "\\b(false|true|null|undefined|NaN)\\b"
+    - constant.number: "\\b[-+]?([1-9][0-9]*|0[0-7]*|0x[0-9a-fA-F]+)([uU][lL]?|[lL][uU]?)?\\b"
+    - constant.number: "\\b[-+]?([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([EePp][+-]?[0-9]+)?[fFlL]?"
+    - constant.number: "\\b[-+]?([0-9]+[EePp][+-]?[0-9]+)[fFlL]?"
+    - constant.bool: "\\b(true|false)\\b"
+    - constant.bool.false: "\\b(false)\\b"
+    - constant.bool.true: "\\b(true)\\b"
+
+    - identifier.function: "\\bfunction\\s+(\\w+)\\s*\\(??"
+    - statement.function: "\\b(function)\\b"
+
+    # const\s+(\S+)[:|=].
+    - identifier.const: "\\bconst\\s+(\\S+)[:|=]??"
+    - statement.const: "\\b(const|type|let|var)\\b"
+
+    - constant.string: "\"(.*?)\""
+    - constant.string: "'(.*?)'"
+    - constant.string: "`(.*?)`"
+
+    - constant.quotes:
+        start: "\""
+        skip: "\\\\."
+        end: "\""
+        rules:
+            - constant.string: "(\"?.*)"
+            - constant.stringEscaped: "\\\\."
+            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
+
+    - constant.quotes:
+        start: "'"
+        skip: "\\\\."
+        end: "'"
+        rules:
+            - constant.string: "('?.*)"
+            - constant.stringEscaped: "\\\\."
+            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
+
+    - constant.quotes:
+        start: "`"
+        end: "`"
+        rules:
+            # Escape character 
+            - constant.string: "(`?.*)"
+            - constant.stringEscaped: "\\\\."
+            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
+
+    # # <(\/*[a-zA-Z]+)[^>]*>
+    # - constant: 
+    #     start: "</?"
+    #     end: "[^>]*>"
+    #     # skip: ".*?"
+    #     rules:
+    #         - identifier.tag: "[a-zA-Z]+"
+    
+    # # (http|https|ftp):\/\/[^\s/$.?#].[^\s]*"
+    # # (http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])
