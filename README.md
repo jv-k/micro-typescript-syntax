@@ -116,11 +116,13 @@ A colour scheme can also set colours for these groups:
 Micro highlights one line at a time with Go regular expressions, so a few cases
 use approximate rules:
 
-- A `/` directly after `)` can start a regular expression, for example
-  `(a)/b/c`.
+- A `/` directly after `)` or `]` can start a regular expression, for example
+  `(a)/b/c` or `arr[i]/n/2`.
 - A regular expression with an unescaped `>` outside `[…]` has no colour.
 - Arrow function names have no colour when a parameter contains parentheses or a
   string, for example `(a = f()) =>`.
+- In a ternary that ends in an arrow function, such as `ok ? a : (b) => b`, `a`
+  has the function name colour.
 - In JSX text, keywords such as `for` and `in` have the keyword colour.
 - A JSX tag directly after a word, such as `text<b>`, has no tag colour.
 - `${…}` handles one level of nested braces.

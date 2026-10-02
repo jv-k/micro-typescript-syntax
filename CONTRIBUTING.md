@@ -37,6 +37,14 @@ them, refer to the [README](README.md).
    [Conventional Commits](https://www.conventionalcommits.org/), for example
    `fix(syntax): ...` or `feat(syntax): ...`.
 7. Make a release. Refer to [Make a release](#make-a-release).
+8. Remove the links from step 1 when you finish. Micro uses the files in its
+   syntax directory before the plugin, so the links hide the installed plugin:
+
+   ```sh
+   for f in typescript typescript-rules tsx jsx-tags; do
+     rm ~/.config/micro/syntax/$f.yaml
+   done
+   ```
 
 The second half of `sample.ts` contains special cases for the rules. All of
 `sample.tsx` contains special cases.
@@ -55,10 +63,11 @@ To make new screenshots in `img/`, run this command:
 pnpm screenshots
 ```
 
-The command needs [vhs](https://github.com/charmbracelet/vhs) and micro. It
-makes one screenshot for each colour scheme, with `dev/sample/demo.ts` and
-`dev/sample/demo.tsx` in two panes. Micro starts with a clean configuration in
-`img/tmp/`, so your own micro settings do not change the result.
+The command needs [vhs](https://github.com/charmbracelet/vhs), micro and the
+Fira Code font. It makes one screenshot for each colour scheme, with
+`dev/sample/demo.ts` and `dev/sample/demo.tsx` in two panes. Micro starts with
+a clean configuration in a temporary directory, so your own micro settings do
+not change the result.
 
 To make only some screenshots, set `SCHEMES`, for example
 `SCHEMES="mojokai-tc" pnpm screenshots`. To use a local copy of the Mojokai
