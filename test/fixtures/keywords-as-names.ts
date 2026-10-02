@@ -20,3 +20,6 @@
 //       ^^^ default
 //                 ^^^^ default
 //  ^ symbol.brackets
+  x.enum; y = { enum: 1 };
+//  ^^^^ default
+//              ^^^^ default
