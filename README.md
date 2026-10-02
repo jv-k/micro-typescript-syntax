@@ -126,6 +126,7 @@ use approximate rules:
 - In JSX text, keywords such as `for` and `in` have the keyword colour.
 - A JSX tag directly after a word, such as `text<b>`, has no tag colour.
 - `${…}` handles one level of nested braces.
+- A `default:` switch label followed by trailing spaces has no keyword colour.
 - Micro versions without [micro#4022](https://github.com/micro-editor/micro/pull/4022)
   can drop the escape colours in some strings.
 

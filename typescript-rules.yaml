@@ -111,8 +111,11 @@ rules:
     - symbol.operator: "[?:]"
 
     # `default:` is a switch label when the line ends after it, opens a
-    # block, or jumps; otherwise it's an object key, reset above.
-    - statement: "\\bdefault\\s*:(\\s*$|\\s*\\{\\s*$|\\s*(break|return|throw|continue)\\b)"
+    # block, or jumps; otherwise it's an object key, reset above. The line
+    # must end right at the `:` (or a CRLF's `\r`): micro hides a string from
+    # these patterns, so `default: "x"` reaches them as `default: ` with the
+    # line ending there.
+    - statement: "\\bdefault\\s*:(\\r?$|\\s*\\{\\s*$|\\s*(break|return|throw|continue)\\b)"
     - symbol.braces: "[{}]"
 
     # ─── Regex literals ──────────────────────────────────────────────────────

@@ -10,6 +10,11 @@
 //                             ^^^^ default
 //                                 ^ symbol.operator
 //                                  ^ symbol.operator
+  variants = {
+    default: "bg-primary",
+//  ^^^^^^^ default
+//         ^ symbol.operator
+  };
   module.exports = y; type.x; from.y;
 //^^^^^^ default
 //                    ^^^^ default

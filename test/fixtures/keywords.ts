@@ -32,6 +32,8 @@
 //           ^ symbol.braces
     default: return;
 //  ^^^^^^^^ statement
+    default: 
+//  ^^^^^^^ statement KNOWN-GAP
   }
   export default x;
 //^^^^^^ statement
