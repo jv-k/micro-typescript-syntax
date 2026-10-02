@@ -22,6 +22,14 @@ rules:
     - identifier.function: "[A-Za-z_$][A-Za-z0-9_$]*((\\s*\\??:\\s*([^=;,<]|<([^<>]|<[^<>]*>)*>)+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
     - default: "((\\s*\\??:\\s*([^=;,<]|<([^<>]|<[^<>]*>)*>)+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
 
+    # Declared type names and their type parameters: `class A<T>`,
+    # `interface P`, `type X<T> =`, `enum E`, `namespace N`, `function f<T>`.
+    # Paint the declaration; the symbol and keyword rules below repaint all
+    # but the names. A function's own name is repainted further down.
+    - type: "\\b(class|enum|interface|namespace)\\s+[A-Za-z_$][A-Za-z0-9_$]*(\\s*<([^<>]|<[^<>]*>)*>)?"
+    - type: "\\btype\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s*(<([^<>]|<[^<>]*>)*>\\s*)?="
+    - type: "\\bfunction\\b\\s*\\*?\\s*[A-Za-z_$][A-Za-z0-9_$]*\\s*<([^<>]|<[^<>]*>)*>"
+
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.operator: "[-+/*=<>!~%?:&|^]"
     - symbol.punctuation: "[.,;]"
