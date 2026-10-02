@@ -23,7 +23,6 @@ rules:
     - default: "((\\s*\\??:\\s*([^=;,<]|<([^<>]|<[^<>]*>)*>)+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
 
     - symbol.brackets: "[(){}]|\\[|\\]"
-    - symbol.braces: "[{}]"
     - symbol.operator: "[-+/*=<>!~%?:&|^]"
     - symbol.punctuation: "[.,;]"
 
@@ -34,11 +33,8 @@ rules:
     - statement: "\\b(new|of|override|package|private|protected|public|readonly|require|return|satisfies)\\b"
     - statement: "\\b(set|static|super|switch|this|throw|try|typeof|unique|using|void|while|with|yield)\\b"
 
-    - statement.var: "\\bvar\\b"
-    - statement.let: "\\blet\\b"
     - statement.const: "\\b(const|type)\\b"
     - statement.class: "\\bclass\\b"
-    - statement.function: "\\bfunction\\b"
 
     - type: "\\b(Array|BigInt|Boolean|Date|Enumerator|Error|Function|Map|Math|Number|Object)\\b"
     - type: "\\b(Promise|RegExp|Set|String|Symbol|WeakMap|WeakSet)\\b"
@@ -83,7 +79,6 @@ rules:
     - statement.function: "\\bfunction\\b\\s*\\*?"
     # A const named like a keyword (`const type = …`) lost its colour above
     - identifier.const: "\\bconst\\s+(as|async|declare|from|get|is|module|namespace|of|readonly|set|type|using|any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
-    - statement: "\\benum\\b"
     - statement.const: "\\bconst\\b"
     # Same for `let` and `var`, whose names are otherwise uncoloured
     - default: "\\b(let|var)\\s+(as|async|declare|from|get|is|module|namespace|of|readonly|set|type|using|any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
