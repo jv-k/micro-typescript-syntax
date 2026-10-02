@@ -1,6 +1,6 @@
 # Highlight tests and gap report — design
 
-Date: 2026-10-02. Status: implemented. Gaps b, c, d and g closed; see `docs/superpowers/plans/`.
+Date: 2026-10-02. Status: implemented. Gaps b, c, d and g closed; see `docs/superpowers/plans/`. Gap a (type references) closed in the common positions; the rest are README edge cases.
 
 ## Goal
 
