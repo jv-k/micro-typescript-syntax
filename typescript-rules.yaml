@@ -29,6 +29,9 @@ rules:
     - type: "\\b(class|enum|interface|namespace)\\s+[A-Za-z_$][A-Za-z0-9_$]*(\\s*<([^<>]|<[^<>]*>)*>)?"
     - type: "\\btype\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s*(<([^<>]|<[^<>]*>)*>\\s*)?="
     - type: "\\bfunction\\b\\s*\\*?\\s*[A-Za-z_$][A-Za-z0-9_$]*\\s*<([^<>]|<[^<>]*>)*>"
+    # A method's type parameters, `lookAhead<T>(`. `\b<` needs the name right
+    # before the `<`, which rules out `a < b && c > (d)` and JSX tags.
+    - type: "\\b<[A-Za-z_$]([^<>()&|;]|<[^<>()]*>)*>\\s*\\("
 
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.operator: "[-+/*=<>!~%?:&|^]"
