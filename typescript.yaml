@@ -41,6 +41,11 @@ rules:
     - type: "\\b(Awaited|Omit|Parameters|Partial|Pick|Readonly|Record|Required|ReturnType)\\b"
     - type.types: "\\b(any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
 
+    # React and Next.js types, and hooks (`useState`, `useRouter`, any `useX`)
+    - type: "\\b(ComponentProps|CSSProperties|Dispatch|FC|JSX|PropsWithChildren|ReactElement|ReactNode|RefObject|SetStateAction)\\b"
+    - type: "\\b(AppProps|GetServerSideProps|GetStaticProps|Metadata|NextPage|NextRequest|NextResponse)\\b"
+    - identifier.function.hook: "\\buse[A-Z][A-Za-z0-9]*\\b"
+
     # ─── Keywords used as plain names ────────────────────────────────────────
     # After a dot (`item.type`, `p.catch`), as an object or param key
     # (`{ type: 'x' }`), before a dot (`module.exports`) or as a call
