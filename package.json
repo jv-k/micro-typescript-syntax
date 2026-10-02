@@ -6,6 +6,10 @@
   "scripts": {
     "bump-release": "bash scripts/bump-release.sh",
     "screenshots": "./dev/screenshots.sh",
-    "test": "cd test && go test ./..."
+    "test": "cd test && go test ./...",
+    "gaps": "node test/gaps/fetch.mjs && node test/gaps/report.mjs"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
   }
 }

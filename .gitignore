@@ -7,3 +7,6 @@ node_modules/
 
 # Screenshot scratch output
 img/tmp/
+
+# Gap report corpus (pnpm gaps downloads it)
+test/gaps/.corpus/

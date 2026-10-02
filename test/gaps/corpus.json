@@ -1,0 +1,36 @@
+[
+  {
+    "repo": "microsoft/TypeScript",
+    "sha": "dca8e236a227e37183dcf1dd4e51b22571f5b558",
+    "paths": ["packages/typescript/src/ast/scanner.ts"]
+  },
+  {
+    "repo": "colinhacks/zod",
+    "sha": "0b216ef674e297ebe41d8bf902262e56f8755822",
+    "paths": ["packages/zod/src/v4/core/checks.ts"]
+  },
+  {
+    "repo": "shadcn-ui/ui",
+    "sha": "295a1f114a138f23b5dfee0e0c6812394dfeb90c",
+    "paths": [
+      "apps/v4/registry/new-york-v4/ui/button.tsx",
+      "apps/v4/registry/new-york-v4/ui/calendar.tsx",
+      "apps/v4/registry/new-york-v4/ui/chart.tsx",
+      "apps/v4/registry/new-york-v4/ui/command.tsx",
+      "apps/v4/registry/new-york-v4/ui/dialog.tsx",
+      "apps/v4/registry/new-york-v4/ui/form.tsx",
+      "apps/v4/registry/new-york-v4/ui/select.tsx",
+      "apps/v4/registry/new-york-v4/ui/sidebar.tsx"
+    ]
+  },
+  {
+    "repo": "vercel/next.js",
+    "sha": "4868b9926dd7e6c779aff4e57550184f22f4eda2",
+    "paths": [
+      "examples/blog-starter/src/app/_components/post-preview.tsx",
+      "examples/blog-starter/src/app/_components/theme-switcher.tsx",
+      "examples/blog-starter/src/app/posts/[slug]/page.tsx",
+      "examples/blog-starter/src/lib/api.ts"
+    ]
+  }
+]
