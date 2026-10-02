@@ -159,5 +159,5 @@ and has N characters. An example is `node:fs/promises` on line 2 of
 
 The cause is in the micro function `highlightRegion`. The function compares a
 column in the full line with a column in a part of the line. Refer to issue
-[micro#4256](https://github.com/micro-editor/micro/issues/4256). Pull request
-[micro#4257](https://github.com/micro-editor/micro/pull/4257) contains a fix.
+[micro#4018](https://github.com/micro-editor/micro/issues/4018). Pull request
+[micro#4022](https://github.com/micro-editor/micro/pull/4022) contains a fix.
