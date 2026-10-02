@@ -1,103 +1,116 @@
 filetype: typescript
 
 detect:
-    filename: "\\.tsx?$"
+    filename: "\\.[cm]?tsx?$"
 
+# Micro applies patterns in order, each overwriting the colours of the ones
+# before it, and colours whole matches (no capture groups). Several rules
+# below lean on that: a broad rule paints a span, a later rule repaints part
+# of it. Strings and comments are regions, which always beat patterns.
 rules:
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.braces: "[{}]"
-    - symbol.operator: "[-+/*=<>!~%?:&|]"
+    - symbol.operator: "[-+/*=<>!~%?:&|^]"
     - symbol.punctuation: "[.,;]"
+
+    # Keywords and statements
+    - statement: "\\b(abstract|accessor|as|asserts|async|await|break|case|catch|constructor|continue)\\b"
+    - statement: "\\b(debugger|declare|default|delete|do|else|enum|export|extends|finally|for|from)\\b"
+    - statement: "\\b(get|if|implements|import|in|infer|instanceof|interface|is|keyof|module|namespace)\\b"
+    - statement: "\\b(new|of|override|package|private|protected|public|readonly|require|return|satisfies)\\b"
+    - statement: "\\b(set|static|super|switch|this|throw|try|typeof|unique|using|void|while|with|yield)\\b"
+
+    # Declarations
+    - statement.var: "\\bvar\\b"
+    - statement.let: "\\blet\\b"
+    - statement.const: "\\b(const|type)\\b"
+    - statement.class: "\\bclass\\b"
+    - statement.function: "\\bfunction\\b"
+
+    # Types
+    - type: "\\b(Array|BigInt|Boolean|Date|Enumerator|Error|Function|Map|Math|Number|Object)\\b"
+    - type: "\\b(Promise|RegExp|Set|String|Symbol|WeakMap|WeakSet)\\b"
+    - type: "\\b(Awaited|Omit|Parameters|Partial|Pick|Readonly|Record|Required|ReturnType)\\b"
+    - type.types: "\\b(any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
+
+    # Keywords are plain names after a dot or as an object/param key:
+    # `item.type`, `map.get(k)`, `{ type: 'x' }`. Reset those, then repaint
+    # the dot and colon the reset swallowed, and the switch `default:` label.
+    - default: "\\.\\s*[A-Za-z_$][A-Za-z0-9_$]*"
+    - default: "\\b[A-Za-z_$][A-Za-z0-9_$]*\\??\\s*:"
+    - symbol.punctuation: "\\."
+    - symbol.operator: "[?:]"
+    - statement: "\\bdefault\\s*:"
+
+    # Constants and literals
+    - constant: "\\b(null|undefined|NaN)\\b"
+    - constant.bool.false: "\\bfalse\\b"
+    - constant.bool.true: "\\btrue\\b"
+
+    # Decimal and float (1_000, 1.5, 1e-3), leading-dot float (.5), then
+    # integer, hex, binary and octal with an optional BigInt suffix (10n).
+    - constant.number: "\\b[0-9](_?[0-9])*(\\.([0-9](_?[0-9])*)?)?([eE][+-]?[0-9](_?[0-9])*)?"
+    - constant.number: "\\B\\.[0-9](_?[0-9])*([eE][+-]?[0-9](_?[0-9])*)?"
+    - constant.number: "\\b([0-9](_?[0-9])*|0[xX][0-9a-fA-F](_?[0-9a-fA-F])*|0[bB][01](_?[01])*|0[oO][0-7](_?[0-7])*)n?\\b"
+
+    # Declared names: paint keyword + name, then repaint the keyword
+    - identifier.function: "\\bfunction\\b\\s*\\*?\\s*[A-Za-z_$][A-Za-z0-9_$]*"
+    - statement.function: "\\bfunction\\b\\s*\\*?"
+    - identifier.const: "\\bconst\\s+[A-Za-z_$][A-Za-z0-9_$]*"
+    - statement: "\\benum\\b"
+    - statement.const: "\\bconst\\b"
 
     # Single line comment
     - comment:
         start: "//"
         end: "$"
         rules:
-            - todo: "(TODO:?|XXX:?|FIXME:?)"
+            - todo: "(TODO|XXX|FIXME):?"
 
     # Multi-line comments
     - comment:
         start: "/\\*"
         end: "\\*/"
-        skip: "\\\\."
         rules:
-            - constant.specialChar: "\\\\."
             # function documentation
             - identifier: "\\s\\*\\s.*"
-            - todo: "(TODO:?|XXX:?|FIXME:?)"
+            - todo: "(TODO|XXX|FIXME):?"
 
-    # Keywords and statements
-    - statement: "\\b(abstract|as|async|await|break|case|catch|class|const|constructor|continue)\\b"
-    - statement: "\\b(debugger|declare|default|delete|do|else|enum|export|extends|finally|for|from)\\b"
-    - statement: "\\b(function|get|if|implements|import|in|instanceof|interface|is|let|module|namespace)\\b"
-    - statement: "\\b(new|of|package|private|protected|public|require|return|set|static|super|switch)\\b"
-    - statement: "\\b(this|throw|try|type|typeof|var|void|while|with|yield)\\b"
-    
-    # Functions and declarations
-    - statement.var: "\\b(var)\\b"
-    - statement.let: "\\b(let)\\b"
-    - statement.class: "\\b(class)\\b"
-
-    # Types
-    - type: "\\b(Array|Boolean|Date|Enumerator|Error|Function|Math)\\b"
-    - type: "\\b(Number|Object|RegExp|String|Symbol)\\b"
-    - type.types: "\\b(any|unknown|boolean|never|number|string|symbol)\\b"
-
-    # Constants and literals
-    - constant: "\\b(false|true|null|undefined|NaN)\\b"
-    - constant.number: "\\b[-+]?([1-9][0-9]*|0[0-7]*|0x[0-9a-fA-F]+)([uU][lL]?|[lL][uU]?)?\\b"
-    - constant.number: "\\b[-+]?([0-9]+\\.[0-9]*|[0-9]*\\.[0-9]+)([EePp][+-]?[0-9]+)?[fFlL]?"
-    - constant.number: "\\b[-+]?([0-9]+[EePp][+-]?[0-9]+)[fFlL]?"
-    - constant.bool: "\\b(true|false)\\b"
-    - constant.bool.false: "\\b(false)\\b"
-    - constant.bool.true: "\\b(true)\\b"
-
-    - identifier.function: "\\bfunction\\s+(\\w+)\\s*\\(??"
-    - statement.function: "\\b(function)\\b"
-
-    # const\s+(\S+)[:|=].
-    - identifier.const: "\\bconst\\s+(\\S+)[:|=]??"
-    - statement.const: "\\b(const|type|let|var)\\b"
-
-    - constant.string: "\"(.*?)\""
-    - constant.string: "'(.*?)'"
-    - constant.string: "`(.*?)`"
-
+    # Strings: the region paints the quotes, the rules paint the body
     - constant.quotes:
         start: "\""
         skip: "\\\\."
         end: "\""
         rules:
-            - constant.string: "(\"?.*)"
+            - constant.string: ".*"
             - constant.stringEscaped: "\\\\."
-            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
 
     - constant.quotes:
         start: "'"
         skip: "\\\\."
         end: "'"
         rules:
-            - constant.string: "('?.*)"
+            - constant.string: ".*"
             - constant.stringEscaped: "\\\\."
-            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
 
+    # Template literals: only these interpolate. RE2 can't balance braces, so
+    # `${…}` handles one level of nesting, e.g. `${fn({ a })}`.
     - constant.quotes:
         start: "`"
+        skip: "\\\\."
         end: "`"
         rules:
-            # Escape character 
-            - constant.string: "(`?.*)"
+            - constant.string: ".*"
             - constant.stringEscaped: "\\\\."
-            - constant.tplLiterals.expression: "\\x24\\{.*?\\}"
+            - constant.tplLiterals.expression: "\\x24\\{([^{}]|\\{[^{}]*\\})*\\}"
 
     # # <(\/*[a-zA-Z]+)[^>]*>
-    # - constant: 
+    # - constant:
     #     start: "</?"
     #     end: "[^>]*>"
     #     # skip: ".*?"
     #     rules:
     #         - identifier.tag: "[a-zA-Z]+"
-    
+
     # # (http|https|ftp):\/\/[^\s/$.?#].[^\s]*"
     # # (http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])
