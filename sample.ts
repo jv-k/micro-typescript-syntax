@@ -101,6 +101,8 @@ let opt?: string;
 a?.b ?? c;
 const fn = (a: string, b?: number): Promise<void> => {};
 const C: FC<Props> = async ({ x }) => x;
+const M: Map<string, Array<number>> = () => new Map();
+function withCb(a: string, cb = (x) => x) {}
 const inc = x => x + 1;
 this.handler = (e) => e;
 const o = { onClick: (e: Event) => go(e), plain: 1 };

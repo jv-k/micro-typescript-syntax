@@ -16,9 +16,11 @@ rules:
     - identifier.const: "\\bconst\\s+[A-Za-z_$][A-Za-z0-9_$]*"
 
     # Arrow functions, `fn = (a) =>`, `fn: T = async (a): R =>`, `fn: (a) =>`:
-    # paint name and signature, then reset the signature.
-    - identifier.function: "[A-Za-z_$][A-Za-z0-9_$]*((\\s*\\??:\\s*[^=;]+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
-    - default: "((\\s*\\??:\\s*[^=;]+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
+    # paint name and signature, then reset the signature. The type `T` stops
+    # at a comma outside `<…>` (two levels deep), so in `f(a: A, cb = () =>)`
+    # only `cb` is a function name.
+    - identifier.function: "[A-Za-z_$][A-Za-z0-9_$]*((\\s*\\??:\\s*([^=;,<]|<([^<>]|<[^<>]*>)*>)+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
+    - default: "((\\s*\\??:\\s*([^=;,<]|<([^<>]|<[^<>]*>)*>)+?)?\\s*=|\\s*\\??:)\\s*(async\\s*)?(<[^<>]*>\\s*)?(\\([^()]*\\)|[A-Za-z_$][A-Za-z0-9_$]*)(\\s*:\\s*[^=;]+?)?\\s*=>"
 
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.braces: "[{}]"
@@ -145,6 +147,3 @@ rules:
             - constant.string: ".*"
             - constant.stringEscaped: "\\\\."
             - constant.tplLiterals.expression: "\\x24\\{([^{}]|\\{[^{}]*\\})*\\}"
-
-    # # (http|https|ftp):\/\/[^\s/$.?#].[^\s]*"
-    # # (http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])
