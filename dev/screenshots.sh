@@ -3,9 +3,10 @@
 # dev/screenshots.sh: regenerate img/screenshot-<scheme>.png via vhs, one PNG
 # per colour scheme, with dev/sample/demo.ts and demo.tsx in two panes.
 #
-# Runs micro against an isolated config in img/tmp/<scheme>/micro-config, with
-# this repository installed as its plugin, so your own settings, plugins and
-# syntax files never leak into the screenshots.
+# Runs micro against an isolated config in a temporary directory, with this
+# repository installed as its plugin, so your own settings, plugins and syntax
+# files never leak into the screenshots. The config lives outside the
+# repository because its plugin link points back at the repository root.
 #
 # Usage:
 #   ./dev/screenshots.sh                       # all schemes
@@ -15,8 +16,9 @@
 # mojokai-tc comes from MOJOKAI_FILE if set, otherwise from GitHub. The other
 # schemes are built into micro.
 #
-# Requires: vhs (https://github.com/charmbracelet/vhs), micro and curl on PATH.
-# Install: brew install vhs micro
+# Requires: vhs (https://github.com/charmbracelet/vhs), micro and curl on PATH,
+# and the Fira Code font.
+# Install: brew install vhs micro && brew install --cask font-fira-code
 
 set -eo pipefail
 
@@ -31,16 +33,19 @@ for cmd in vhs micro curl; do
 done
 
 read -r -a schemes <<<"${SCHEMES:-mojokai-tc dracula-tc one-dark gruvbox-tc dukelight-tc}"
+config_root="$(mktemp -d)"
+trap 'rm -rf -- "$config_root"' EXIT
+
 MOJOKAI_URL="https://raw.githubusercontent.com/jv-k/micro-mojokai-colorscheme/master/mojokai-tc.micro"
 
 for scheme in "${schemes[@]}"; do
   dir="img/tmp/$scheme"
-  config="$dir/micro-config"
+  config="$config_root/$scheme"
 
   # Start from a clean config every run. vhs can also leave a directory of
   # frames at a `Screenshot` path, so remove both shapes.
   rm -rf -- "$dir" "img/screenshot-$scheme.png"
-  mkdir -p "$config/plug" "$config/colorschemes"
+  mkdir -p "$dir" "$config/plug" "$config/colorschemes"
   ln -s "$REPO_ROOT" "$config/plug/typescript_syntax"
 
   if [ "$scheme" = "mojokai-tc" ]; then
