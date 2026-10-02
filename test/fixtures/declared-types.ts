@@ -34,6 +34,8 @@
 //              ^ type
 //                          ^ symbol.operator
 //                            ^ type
+  function on<F extends (e: E) => void>(f: F) {}
+//            ^ type
   const C = class extends Base {};
 //          ^^^^^ statement.class
 //                ^^^^^^^ statement

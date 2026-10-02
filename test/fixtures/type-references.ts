@@ -79,3 +79,15 @@
   type U = | Left | Right;
 //           ^^^^ type
 //                  ^^^^^ type
+
+  // Type arguments of a call, with `|` or `&` between spaces.
+  const Ctx = React.createContext<Props | null>(null); f<A & B>(x);
+//                                ^^^^^ type
+//                                      ^ symbol.operator
+//                                        ^^^^ constant
+//                                                       ^ type
+//                                                           ^ type
+  ok = a<b || c>(d); ok = a<b|c>(d);
+//       ^ default
+//            ^ default
+//                          ^ default

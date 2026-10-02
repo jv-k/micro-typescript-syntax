@@ -56,9 +56,11 @@ rules:
     - type: "\\b(class|enum|interface|namespace)\\s+[A-Za-z_$][A-Za-z0-9_$]*(\\s*<([^<>]|<[^<>]*>)*>)?"
     - type: "\\btype\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s*(<([^<>]|<[^<>]*>)*>\\s*)?="
     - type: "\\bfunction\\b\\s*\\*?\\s*[A-Za-z_$][A-Za-z0-9_$]*\\s*<([^<>]|<[^<>]*>)*>"
-    # A method's type parameters, `lookAhead<T>(`. `\b<` needs the name right
-    # before the `<`, which rules out `a < b && c > (d)` and JSX tags.
-    - type: "\\b<[A-Za-z_$]([^<>()&|;]|<[^<>()]*>)*>\\s*\\("
+    # A method's type parameters, `lookAhead<T>(`, and a call's type
+    # arguments, `f<A | B>(`. `\b<` needs the name right before the `<`,
+    # which rules out `a < b && c > (d)` and JSX tags. `|` and `&` need a space
+    # on each side, which rules out `a<b || c>(d)` and `a<b|c>(d)`.
+    - type: "\\b<[A-Za-z_$]([^<>()&|;]|\\s[|&]\\s|<[^<>()]*>)*>\\s*\\("
 
     # ─── Type references ─────────────────────────────────────────────────────
     # Names after `extends` and `implements`, with a comma list and type
