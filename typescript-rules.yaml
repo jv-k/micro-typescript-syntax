@@ -33,6 +33,12 @@ rules:
     # before the `<`, which rules out `a < b && c > (d)` and JSX tags.
     - type: "\\b<[A-Za-z_$]([^<>()&|;]|<[^<>()]*>)*>\\s*\\("
 
+    # ─── Type references ─────────────────────────────────────────────────────
+    # Names after `extends` and `implements`, with a comma list and type
+    # arguments: `class A extends B implements C, D<E>`. The keyword rules
+    # below repaint the keywords.
+    - type: "\\b(extends|implements)\\s+[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<[^<>]*>)*>)?(\\s*,\\s*[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<[^<>]*>)*>)?)*"
+
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.operator: "[-+/*=<>!~%?:&|^]"
 
