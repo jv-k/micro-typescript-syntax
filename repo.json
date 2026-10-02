@@ -2,5 +2,14 @@
   "Name": "typescript_syntax",
   "Description": "TypeScript and TSX syntax highlighting, with JSX, React and Next.js support",
   "Website": "https://github.com/jv-k/micro-typescript-syntax",
-  "Tags": ["syntax", "typescript", "tsx", "jsx", "react"]
+  "Tags": ["syntax", "typescript", "tsx", "jsx", "react"],
+  "Versions": [
+    {
+      "Version": "1.0.0",
+      "Url": "https://github.com/jv-k/micro-typescript-syntax/archive/v1.0.0.zip",
+      "Require": {
+        "micro": ">=2.0.0"
+      }
+    }
+  ]
 }]
