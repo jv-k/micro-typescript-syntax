@@ -98,6 +98,10 @@ rules:
     - symbol.punctuation: ","
     - symbol.operator: "[?:]"
 
+    # `$` is not a word character, so `\b` finds keywords inside names such
+    # as `$constructor` or `type$`. Those names are plain.
+    - default: "\\$+(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\b|\\b(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\$"
+
     # `default:` is a switch label when the line ends after it, opens a
     # block, or jumps; otherwise it's an object key, reset above.
     - statement: "\\bdefault\\s*:(\\s*$|\\s*\\{\\s*$|\\s*(break|return|throw|continue)\\b)"

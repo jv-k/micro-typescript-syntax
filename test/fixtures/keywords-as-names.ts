@@ -68,3 +68,13 @@
 //                                  ^^^^^ constant.bool.false
   switch (k) { case null: break; }
 //                  ^^^^ constant
+  // A keyword inside a name with `$` is not a keyword.
+  core.$constructor<Z>(x); y = $type + $if + type$ + $null;
+//     ^^^^^^^^^^^^ default
+//                             ^^^^^ default
+//                                     ^^^ default
+//                                           ^^^^^ default
+//                                                   ^^^^^ default
+  const $el = 1; const $type = 2;
+//      ^^^ identifier.const
+//               ^^^^^ statement.const
