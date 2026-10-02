@@ -126,6 +126,19 @@ part of the text. Then a subsequent rule changes the colour of a smaller part.
 For these rules, the sequence is important. The comments in `typescript.yaml`
 identify these rules.
 
+## Release
+
+To release a new version, run this command on `master`:
+
+```sh
+pnpm bump-release [patch|minor|major|X.Y.Z]
+```
+
+The default is `patch`. The command changes the version in
+`typescript_syntax.lua` and adds the version to `repo.json`. Then it commits,
+tags and pushes the release. It shows the changes and asks before it starts.
+Use `--dry-run` to see the changes only.
+
 ## Known limits
 
 Micro examines one line at a time. It uses Go regular expressions. These

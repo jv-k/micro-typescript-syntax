@@ -1,0 +1,9 @@
+{
+  "name": "micro-typescript-syntax",
+  "private": true,
+  "description": "TypeScript and TSX syntax highlighting for the micro editor",
+  "license": "ISC",
+  "scripts": {
+    "bump-release": "bash scripts/bump-release.sh"
+  }
+}

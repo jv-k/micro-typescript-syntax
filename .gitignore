@@ -1,3 +1,6 @@
 # Scratch and editor files
 *_
 *.code-workspace
+
+# pnpm
+node_modules/
