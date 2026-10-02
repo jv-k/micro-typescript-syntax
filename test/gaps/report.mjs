@@ -50,6 +50,10 @@ function classify(path, text) {
   const lastName = (n) => (ts.isQualifiedName(n) ? n.right : ts.isPropertyAccessExpression(n) ? n.name : n);
   const visit = (node) => {
     if (node.kind === ts.SyntaxKind.RegularExpressionLiteral) mark(node, 'regex');
+    else if (ts.isIdentifier(node) && ts.isPropertyAssignment(node.parent) && node.parent.name === node) {
+      // a key named `undefined` or `NaN` is a plain name, not the value
+      if (node.text === 'undefined' || node.text === 'NaN') mark(node, 'identifier');
+    }
     else if (ts.isTypeReferenceNode(node)) {
       // `as const` parses as a reference to a type named `const`
       const name = lastName(node.typeName);
