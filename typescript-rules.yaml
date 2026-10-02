@@ -31,6 +31,8 @@ rules:
     # Optional members and parameters: `a?: T`
     - type: "\\?:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
     - type: "\\bsatisfies\\s+((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    # A type alias's right-hand side: `type K = A | B.C`, `type U = | A | B`
+    - type: "\\btype\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>\\s*)?=\\s*\\|?\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
     # Clear the names before the colon, and the value after `typeof`.
     - default: "[A-Za-z_$][A-Za-z0-9_$]*\\s*[?!]?\\s*:"
     - default: "\\btypeof\\s+[A-Za-z_$][A-Za-z0-9_$.]*"

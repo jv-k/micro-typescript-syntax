@@ -67,3 +67,15 @@
     abstract: SyntaxKind.AbstractKeyword,
 //            ^^^^^^^^^^ default
 //                       ^^^^^^^^^^^^^^^ default
+
+  // The right-hand side of a type alias.
+  export type Kind = SyntaxKind.EndOfFile | Ns.A<T> | keyof typeof obj;
+//                              ^^^^^^^^^ type
+//                                        ^ symbol.operator
+//                                             ^ type
+//                                                    ^^^^^ statement
+//                                                          ^^^^^^ statement
+//                                                                 ^^^ default
+  type U = | Left | Right;
+//           ^^^^ type
+//                  ^^^^^ type
