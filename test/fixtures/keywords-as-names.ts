@@ -39,3 +39,32 @@
 //       ^^^^ statement.const
 //                          ^^^^ statement.const
 //                                           ^^^^ statement.const
+  // Keyword-named keys stay plain names; ternaries keep their colours.
+  x = { super: 1, this: 2, void: 3 };
+//      ^^^^^ default
+//                ^^^^ default
+//                         ^^^^ default
+//              ^ symbol.punctuation
+//                    ^ symbol.operator
+  y = { null: 1, true: 2, undefined: 3, NaN: 4 };
+//      ^^^^ default
+//               ^^^^ default
+//                        ^^^^^^^^^ default
+//                                      ^^^ default
+  z = { any: 1, string?: 2, const: 3, let: 4, var: 5, function: 6 };
+//      ^^^ default
+//              ^^^^^^ default
+//                    ^ symbol.operator
+//                          ^^^^^ default
+//                                    ^^^ default
+//                                            ^^^ default
+//                                                    ^^^^^^^^ default
+    null: SyntaxKind.NullKeyword,
+//  ^^^^ default
+  ok ? null : this; f(a, b ? true : false);
+//     ^^^^ constant
+//            ^^^^ statement
+//                           ^^^^ constant.bool.true
+//                                  ^^^^^ constant.bool.false
+  switch (k) { case null: break; }
+//                  ^^^^ constant

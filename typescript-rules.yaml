@@ -67,11 +67,6 @@ rules:
     - symbol.punctuation: "[.,;]"
     - symbol.operator: "[?:=!]"
 
-    # `default:` is a switch label when the line ends after it, opens a
-    # block, or jumps; otherwise it's an object key, reset above.
-    - statement: "\\bdefault\\s*:(\\s*$|\\s*\\{\\s*$|\\s*(break|return|throw|continue)\\b)"
-    - symbol.braces: "[{}]"
-
     # ─── Literals ────────────────────────────────────────────────────────────
     - constant: "\\b(null|undefined|NaN)\\b"
     - constant.bool.false: "\\bfalse\\b"
@@ -93,6 +88,20 @@ rules:
     - default: "\\b(let|var)\\s+(as|async|declare|from|get|is|module|namespace|of|readonly|set|type|using|any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
     - statement.let: "\\blet\\b"
     - statement.var: "\\bvar\\b"
+
+    # ─── Keywords used as plain names, again ────────────────────────────────
+    # The literal, type-keyword and late keyword rules above repaint keys
+    # such as `null:`, `any:` or `const:`. Reset those keys again, but only
+    # after `{`, `,` or at the start of a line, so `a ? null : b` and
+    # `case null:` keep their colours.
+    - default: "(^|[{,])\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??\\s*:"
+    - symbol.punctuation: ","
+    - symbol.operator: "[?:]"
+
+    # `default:` is a switch label when the line ends after it, opens a
+    # block, or jumps; otherwise it's an object key, reset above.
+    - statement: "\\bdefault\\s*:(\\s*$|\\s*\\{\\s*$|\\s*(break|return|throw|continue)\\b)"
+    - symbol.braces: "[{}]"
 
     # ─── Regex literals ──────────────────────────────────────────────────────
     # A `/` is a regex, not division, when no word character touches it
