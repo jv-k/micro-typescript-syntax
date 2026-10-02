@@ -32,7 +32,6 @@ rules:
 
     - symbol.brackets: "[(){}]|\\[|\\]"
     - symbol.operator: "[-+/*=<>!~%?:&|^]"
-    - symbol.punctuation: "[.,;]"
 
     # ─── Keywords and types ──────────────────────────────────────────────────
     - statement: "\\b(abstract|accessor|as|asserts|async|await|break|case|catch|constructor|continue)\\b"
@@ -62,9 +61,11 @@ rules:
     - default: "\\b(abstract|accessor|as|asserts|async|await|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|new|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|switch|throw|try|type|typeof|unique|using|var|while|with|yield)\\??\\s*:"
     - default: "\\b(abstract|accessor|as|asserts|async|constructor|declare|from|get|infer|is|keyof|module|namespace|of|override|package|readonly|require|satisfies|set|type|unique|using)\\s*\\."
     - default: "\\b(declare|from|get|is|module|namespace|of|set|type|using)\\s*\\("
-    - symbol.brackets: "\\("
-    - symbol.punctuation: "\\."
-    - symbol.operator: "[?:]"
+    # `type` as a variable: `return type;`, `type === x`, `f(type)`, `type = 1`
+    - default: "\\btype\\s*([;,)\\]}]|[=!]==?|=[^=>]|$)"
+    - symbol.brackets: "[()\\]]"
+    - symbol.punctuation: "[.,;]"
+    - symbol.operator: "[?:=!]"
 
     # `default:` is a switch label when the line ends after it, opens a
     # block, or jumps; otherwise it's an object key, reset above.
