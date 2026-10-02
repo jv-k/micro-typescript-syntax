@@ -3,6 +3,9 @@
 TypeScript syntax highlighting for the [micro](https://micro-editor.github.io/) editor.
 It covers `.ts`, `.mts` and `.cts` files, plus `.tsx` with JSX.
 
+It also knows common React and Next.js types (`ReactNode`, `FC`, `NextPage`, …)
+and colours hooks such as `useState` and `useRouter`.
+
 | File | Role |
 |---|---|
 | `typescript.yaml` | TypeScript rules |
@@ -30,8 +33,8 @@ other scheme, micro falls back to each sub-group's parent (`constant`,
 `statement`, …), so highlighting still works with fewer distinct colours.
 
 Groups the scheme can add for finer control: `constant.string.regex` (regex
-literals), `statement.tag` and `type.tag` (JSX elements and components) and
-`identifier.attribute` (JSX attributes).
+literals), `statement.tag` and `type.tag` (JSX elements and components),
+`identifier.attribute` (JSX attributes) and `identifier.function.hook` (hooks).
 
 ## Developing
 
@@ -68,12 +71,6 @@ heuristics:
   its inner colours. One example is `node:fs/promises` on line 2 of
   `sample.ts`, whose body starts at column 16 and is 16 characters long. The
   cause is in micro's `highlightRegion`, which compares an absolute column with
-  a relative one.
-
-## TODO
-
-### Add React / Next
-
-- `useRouter`
-- `ReactNode`
-- `ReactElement`
+  a relative one. Reported as
+  [micro#4256](https://github.com/micro-editor/micro/issues/4256), with a fix in
+  [micro#4257](https://github.com/micro-editor/micro/pull/4257).
