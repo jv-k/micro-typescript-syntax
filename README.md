@@ -1,7 +1,31 @@
-# micro-typescript-syntax
+# TypeScript for micro
 
-These syntax files add colours to TypeScript code in the
-[micro](https://micro-editor.github.io/) text editor.
+Syntax highlighting for TypeScript and TSX in the
+[micro](https://micro-editor.github.io/) text editor, with JSX, React and
+Next.js support.
+
+![micro with the Mojokai colour scheme. Two panes show a TypeScript file and a TSX file, with keywords, types, strings, regular expressions, JSX tags and React hooks in different colours.](img/screenshot-mojokai-tc.png)
+
+<details>
+<summary>More colour schemes</summary>
+
+Dracula:
+
+![The same two files with the Dracula colour scheme.](img/screenshot-dracula-tc.png)
+
+One Dark:
+
+![The same two files with the One Dark colour scheme.](img/screenshot-one-dark.png)
+
+Gruvbox:
+
+![The same two files with the Gruvbox colour scheme.](img/screenshot-gruvbox-tc.png)
+
+Duke Light:
+
+![The same two files with the Duke Light colour scheme.](img/screenshot-dukelight-tc.png)
+
+</details>
 
 The syntax files apply to these files:
 
@@ -14,7 +38,8 @@ The syntax files also identify common React and Next.js types, for example
 
 | File | Function |
 |---|---|
-| `typescript.yaml` | Contains the TypeScript rules. |
+| `typescript-rules.yaml` | Contains the TypeScript rules. |
+| `typescript.yaml` | Applies to `.ts`, `.mts` and `.cts` files. It uses the TypeScript rules. |
 | `tsx.yaml` | Applies to `.tsx` files. It uses the TypeScript rules, then the JSX rules. |
 | `jsx-tags.yaml` | Contains the JSX rules. Only `tsx.yaml` uses this file. |
 | `typescript_syntax.lua`, `repo.json` | Make this repository a micro plugin. |
@@ -65,8 +90,8 @@ Install the micro-typescript-syntax plugin for the micro text editor.
 4. If the directory does not exist, clone
    https://github.com/jv-k/micro-typescript-syntax into it.
 5. Look in the syntax subdirectory of the configuration directory for
-   typescript.yaml, tsx.yaml and jsx-tags.yaml. Micro uses these files
-   before the plugin. Do not change or delete them. Tell me which of them
+   typescript.yaml, typescript-rules.yaml, tsx.yaml and jsx-tags.yaml.
+   Micro uses these files before the plugin. Do not change or delete them. Tell me which of them
    exist and where they point if they are links.
 6. Tell me the plugin path and the installed commit. Tell me to restart
    micro.
@@ -102,7 +127,7 @@ instead of the plugin install:
 
 ```sh
 mkdir -p ~/.config/micro/syntax
-for f in typescript tsx jsx-tags; do
+for f in typescript typescript-rules tsx jsx-tags; do
   ln -s "$PWD/$f.yaml" ~/.config/micro/syntax/$f.yaml
 done
 ```
@@ -126,6 +151,21 @@ part of the text. Then a subsequent rule changes the colour of a smaller part.
 For these rules, the sequence is important. The comments in `typescript.yaml`
 identify these rules.
 
+## Screenshots
+
+To make new screenshots in `img/`, run this command:
+
+```sh
+pnpm screenshots
+```
+
+The command needs [vhs](https://github.com/charmbracelet/vhs) and micro. It
+makes one screenshot for each colour scheme, with `dev/sample/demo.ts` and
+`dev/sample/demo.tsx` in two panes. Micro starts with a clean configuration in
+`img/tmp/`, so your own micro settings do not change the result. Set `SCHEMES`
+to make only some screenshots, for example `SCHEMES="mojokai-tc" pnpm
+screenshots`.
+
 ## Release
 
 To release a new version, run this command on `master`:
@@ -139,51 +179,18 @@ The default is `patch`. The command changes the version in
 tags and pushes the release. It shows the changes and asks before it starts.
 Use `--dry-run` to see the changes only.
 
-## Known limits
+## Edge cases
 
-Micro examines one line at a time. It uses Go regular expressions. These
-expressions cannot examine the text before a match, and they cannot count
-brackets. Thus some rules use approximate tests, and these tests are not always
-correct.
+Micro highlights one line at a time with Go regular expressions, so a few cases
+use approximate rules:
 
-### Regular expression literals
-
-- The rules can show a `/` as the start of a regular expression. This occurs
-  when no letter or digit is immediately before the `/`, and no space is
-  immediately after it. Thus `(a)/b/c` shows as a regular expression.
-- The rules do not give a colour to a regular expression that contains a `>`
-  outside a character class. A `\>` does not cause this problem.
-- A quote in a regular expression can start a string by mistake. The rules
-  prevent this only when the regular expression comes after an operator, a
-  bracket, `return` or `typeof`.
-
-### Arrow functions
-
-- The rules do not give a colour to the function name when a parameter contains
-  parentheses or a string. An example is `(a = f()) =>`.
-
-### JSX
-
-- Keywords in the text between tags have the keyword colour, for example `for`
-  and `in`.
-- The rules do not identify an opening tag immediately after a word, for
-  example `text<b>`. This text is the same as a generic type.
-- Attributes without a value do not have a colour.
-
-### Template literals
-
-- The rules find the end of `${…}` correctly when it contains one level of
-  braces, for example `${f({ a })}`. With more levels, the colour stops too
-  early.
-
-### Micro bug
-
-Some strings lose the colours of the text in them, for example escape
-sequences. This occurs when the string body starts at column N, counted from 0,
-and has N characters. An example is `node:fs/promises` on line 2 of
-`sample.ts`. Its body starts at column 16 and has 16 characters.
-
-The cause is in the micro function `highlightRegion`. The function compares a
-column in the full line with a column in a part of the line. Refer to issue
-[micro#4018](https://github.com/micro-editor/micro/issues/4018). Pull request
-[micro#4022](https://github.com/micro-editor/micro/pull/4022) contains a fix.
+- A `/` directly after `)` can start a regular expression, for example
+  `(a)/b/c`.
+- A regular expression with an unescaped `>` outside `[…]` has no colour.
+- Arrow function names have no colour when a parameter contains parentheses or a
+  string, for example `(a = f()) =>`.
+- In JSX text, keywords such as `for` and `in` have the keyword colour.
+- A JSX tag directly after a word, such as `text<b>`, has no tag colour.
+- `${…}` handles one level of nested braces.
+- Micro versions without [micro#4022](https://github.com/micro-editor/micro/pull/4022)
+  can drop the escape colours in some strings.
