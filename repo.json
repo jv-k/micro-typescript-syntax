@@ -1,0 +1,6 @@
+[{
+  "Name": "typescript_syntax",
+  "Description": "TypeScript and TSX syntax highlighting, with JSX, React and Next.js support",
+  "Website": "https://github.com/jv-k/micro-typescript-syntax",
+  "Tags": ["syntax", "typescript", "tsx", "jsx", "react"]
+}]
