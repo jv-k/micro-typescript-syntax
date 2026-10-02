@@ -1,0 +1,10 @@
+filetype: tsx
+
+detect:
+    filename: "\\.tsx$"
+
+# Micro appends included rules in include order, after a file's own rules,
+# so the JSX rules live in their own file to run after the TypeScript ones.
+rules:
+    - include: "typescript"
+    - include: "jsx-tags"

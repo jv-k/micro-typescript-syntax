@@ -99,3 +99,22 @@ const enum E { A }
 /* path \*/ const after = 1;
 let opt?: string;
 a?.b ?? c;
+const fn = (a: string, b?: number): Promise<void> => {};
+const C: FC<Props> = async ({ x }) => x;
+const inc = x => x + 1;
+this.handler = (e) => e;
+const o = { onClick: (e: Event) => go(e), plain: 1 };
+const type = 'x'; let get = 1;
+const re = /["'`]/g; const s = 'after regex';
+if (/^\/\//.test(u)) { x = 1; } // real comment
+const ratio = a / b / c; const r2 = a/b/c;
+paths.join('/a', '/b');
+return /a[/]b/i.test(s);
+module.exports = { default: 2 };
+of(1).pipe(from(x));
+switch (k) {
+  default:
+    break;
+}
+const t = `${a}/${b}/`;
+const ok = 'still a string';

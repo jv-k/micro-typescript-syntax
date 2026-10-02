@@ -1,0 +1,17 @@
+filetype: jsx-tags
+
+# JSX rules for tsx.yaml, which includes them after the TypeScript rules so
+# these repaint on top. No `detect`: micro never picks this file on its own.
+rules:
+    # Tag names: lower-case are elements, capitalised are components. `\B`
+    # before an opening `<` rules out generics such as `Array<T>` and
+    # `useState<T>()`; a closing `</` can't be a generic, so it needs no guard.
+    - statement.tag: "\\B<[a-z][A-Za-z0-9.:-]*|</[a-z][A-Za-z0-9.:-]*"
+    - type.tag: "\\B<[A-Z][A-Za-z0-9_.]*|</[A-Z][A-Za-z0-9_.]*"
+    - symbol.operator: "\\B<\\b|</\\b"
+
+    # Attributes: `name=` before a string or `{`. Attribute names win over
+    # keywords, so `type="button"` and `as={Link}` aren't coloured as keywords.
+    - identifier.attribute: "\\b[A-Za-z_][A-Za-z0-9_-]*=($|\\{)"
+    - symbol.operator: "=($|\\{)"
+    - symbol.braces: "[{}]"
