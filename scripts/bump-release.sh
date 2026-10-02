@@ -19,7 +19,7 @@ dry_run=false
 for arg in "$@"; do
   case "$arg" in
     patch | minor | major) bump="$arg" ;;
-    [0-9]*.[0-9]*.[0-9]*) bump="$arg" ;;
+    [0-9]*) bump="$arg" ;;
     --yes | -y) yes=true ;;
     --dry-run) dry_run=true ;;
     *)
@@ -64,6 +64,17 @@ case "$bump" in
   major) next="$((major + 1)).0.0" ;;
   *) next="$bump" ;;
 esac
+
+# An explicit version must be plain X.Y.Z, or the next run can't read VERSION
+if ! [[ "$next" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Version must be X.Y.Z (got '$next')." >&2
+  exit 1
+fi
+if [ "$next" = "$current" ] ||
+  [ "$(printf '%s\n%s\n' "$current" "$next" | sort -V | tail -n 1)" != "$next" ]; then
+  echo "Version $next is not newer than $current." >&2
+  exit 1
+fi
 
 if git rev-parse --quiet --verify "refs/tags/v$next" >/dev/null; then
   echo "Tag v$next already exists." >&2
