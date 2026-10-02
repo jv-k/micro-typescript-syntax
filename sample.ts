@@ -110,6 +110,8 @@ const type = 'x'; let get = 1;
 const re = /["'`]/g; const s = 'after regex';
 if (/^\/\//.test(u)) { x = 1; } // real comment
 const ratio = a / b / c; const r2 = a/b/c;
+const mid = (w + 1)/2 + (h - 1)/3; const y = arr[i]/n/2;
+s.replace(/(\d+)/g, x).split(/,/); /[a-z]/i.test(x) || /b/.test(y);
 paths.join('/a', '/b');
 return /a[/]b/i.test(s);
 module.exports = { default: 2 };

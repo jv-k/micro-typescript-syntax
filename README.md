@@ -116,8 +116,8 @@ A colour scheme can also set colours for these groups:
 Micro highlights one line at a time with Go regular expressions, so a few cases
 use approximate rules:
 
-- A `/` directly after `)` or `]` can start a regular expression, for example
-  `(a)/b/c` or `arr[i]/n/2`.
+- A regular expression directly after `)` or `]` has no colour, for example
+  `if (ok) /re/.test(s)`.
 - A regular expression with an unescaped `>` outside `[…]` has no colour.
 - Arrow function names have no colour when a parameter contains parentheses or a
   string, for example `(a = f()) =>`.

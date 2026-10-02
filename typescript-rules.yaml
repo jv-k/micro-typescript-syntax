@@ -97,6 +97,10 @@ rules:
     # `</a>…</b>` and `<A /> <B />` from reading as regexes.
     - constant.string.regex: "\\B/([^/\\\\\\[\\s*>]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])([^/\\\\\\[>]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])*/[dgimsuvy]*"
     - constant.specialChar: "\\\\."
+    # `)` or `]` then `/` is division (CoffeeScript's CALLABLE): `(a)/b/c`.
+    # Skip a `/` followed by flags then a non-word character (`)/g,`,
+    # `]/.test`): that is the end of a regex, not division.
+    - default: "[)\\]]\\s*/[dgimsuvy]*[abcefhjklnopqrtwxzA-Z0-9_$(]([^/\\\\\\[>]|\\\\.|\\[([^\\]\\\\]|\\\\.)*\\])*/[dgimsuvy]*"
 
     # ─── Comments and strings ────────────────────────────────────────────────
     # The `skip` patterns stop a quote or `//` inside a regex literal from
