@@ -44,7 +44,7 @@ on the rules as they will be after Task 4, and the gap report ran on the corpus.
 **Interfaces:**
 - Produces: `var RuleFiles []string`; `type Defs map[string]*highlight.Def` keyed by filetype (`"typescript"`, `"tsx"`); `func Load(root string, overrides map[string][]byte) (Defs, error)` where an `overrides` key is a file name without `.yaml`; `func Groups(def *highlight.Def, src string) [][]string` returning the group name per character per line (`""` = no group). Test constant `root = ".."`.
 
-- [ ] **Step 1: Commit the pending work first**
+- [x] **Step 1: Commit the pending work first**
 
 The working tree holds the `)`/`]` division rule (with its `sample.ts` lines and README edge-case change) and the spec. Commit them separately so this plan starts clean.
 
@@ -55,7 +55,7 @@ git add docs/superpowers/specs/2026-10-02-highlight-tests-design.md
 git commit -m "docs(spec): add the highlight tests and gap report design"
 ```
 
-- [ ] **Step 2: Create the module**
+- [x] **Step 2: Create the module**
 
 ```bash
 mkdir -p test && cd test
@@ -65,7 +65,7 @@ go get github.com/zyedidia/micro/v2/pkg/highlight@v2.0.15 gopkg.in/yaml.v3@v3.0.
 
 Set the `go` line in `test/go.mod` to `go 1.26` if `go mod init` wrote a patch version.
 
-- [ ] **Step 3: Write the failing test**
+- [x] **Step 3: Write the failing test**
 
 ````go
 package syntaxtest
@@ -122,12 +122,12 @@ func TestLoadOverride(t *testing.T) {
 }
 ````
 
-- [ ] **Step 4: Run it to see it fail**
+- [x] **Step 4: Run it to see it fail**
 
 Run: `cd test && go test ./...`
 Expected: FAIL to compile with `undefined: Load` and `undefined: Groups`.
 
-- [ ] **Step 5: Write the loader**
+- [x] **Step 5: Write the loader**
 
 ````go
 // Package syntaxtest tests the syntax files with micro's own highlighter.
@@ -207,12 +207,12 @@ func Groups(def *highlight.Def, src string) [][]string {
 }
 ````
 
-- [ ] **Step 6: Run the tests**
+- [x] **Step 6: Run the tests**
 
 Run: `cd test && go mod tidy && go test ./...`
 Expected: `ok  github.com/jv-k/micro-typescript-syntax/test`. `test/go.mod` now lists `github.com/zyedidia/micro/v2 v2.0.15` and `gopkg.in/yaml.v3 v3.0.1` as direct requirements and `gopkg.in/yaml.v2 v2.2.8 // indirect`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add test/go.mod test/go.sum test/load.go test/load_test.go
@@ -234,7 +234,7 @@ git commit -m "test(syntax): load the syntax files with micro's highlighter"
 
 Assertion syntax, for reference: a line that is only `//`, spaces, a run of `^`, then a group, optional `!` before the group, optional `KNOWN-GAP` after it. `default` matches no group or micro's `default` group (the reset rules paint `default`; both render plain).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ````go
 package syntaxtest
@@ -330,12 +330,12 @@ func TestFixtures(t *testing.T) {
 }
 ````
 
-- [ ] **Step 2: Run them to see them fail**
+- [x] **Step 2: Run them to see them fail**
 
 Run: `cd test && go test ./...`
 Expected: FAIL to compile with `undefined: ParseFixture`, `undefined: Assertion`, `undefined: Check`, `undefined: LoadFixtures`.
 
-- [ ] **Step 3: Write the fixture parser and checker**
+- [x] **Step 3: Write the fixture parser and checker**
 
 ````go
 package syntaxtest
@@ -494,12 +494,12 @@ func (e Failure) String() string {
 }
 ````
 
-- [ ] **Step 4: Run the tests**
+- [x] **Step 4: Run the tests**
 
 Run: `mkdir -p test/fixtures && cd test && go test ./...`
 Expected: PASS. `TestFixtures` passes with no subtests because `fixtures/` is empty.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add test/fixture.go test/fixture_test.go
@@ -521,7 +521,7 @@ These record the intended behaviour of each rule. Columns were generated from
 micro's output and then each assertion was chosen by intent, so a failing
 assertion here means a rule regressed, not that the fixture needs updating.
 
-- [ ] **Step 1: Write `test/fixtures/declared-names.ts`**
+- [x] **Step 1: Write `test/fixtures/declared-names.ts`**
 
 ````ts
   // Declared names: const, arrow functions, function declarations.
@@ -563,7 +563,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //     ^ default KNOWN-GAP
 ````
 
-- [ ] **Step 2: Write `test/fixtures/symbols.ts`**
+- [x] **Step 2: Write `test/fixtures/symbols.ts`**
 
 ````ts
   call(a[0], { b: c });
@@ -594,7 +594,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //       ^^ symbol.operator
 ````
 
-- [ ] **Step 3: Write `test/fixtures/keywords.ts`**
+- [x] **Step 3: Write `test/fixtures/keywords.ts`**
 
 ````ts
   abstract class A extends B implements C {}
@@ -690,7 +690,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //                            ^^^^^^^ statement
 ````
 
-- [ ] **Step 4: Write `test/fixtures/types.ts`**
+- [x] **Step 4: Write `test/fixtures/types.ts`**
 
 ````ts
   Array Boolean Date Error Function Map Math Number Object BigInt Enumerator
@@ -723,7 +723,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //             ^^^^^^^^^ default
 ````
 
-- [ ] **Step 5: Write `test/fixtures/keywords-as-names.ts`**
+- [x] **Step 5: Write `test/fixtures/keywords-as-names.ts`**
 
 ````ts
   item.type; p.catch(); a. new; x.this;
@@ -750,7 +750,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //  ^ symbol.brackets
 ````
 
-- [ ] **Step 6: Write `test/fixtures/literals.ts` and `test/fixtures/numbers.ts`**
+- [x] **Step 6: Write `test/fixtures/literals.ts` and `test/fixtures/numbers.ts`**
 
 `literals.ts`:
 
@@ -789,7 +789,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //          ^ default
 ````
 
-- [ ] **Step 7: Write `test/fixtures/regex.ts`**
+- [x] **Step 7: Write `test/fixtures/regex.ts`**
 
 ````ts
   const r = /ab+c/gi;
@@ -819,7 +819,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //           ^^^^^ constant.string.regex KNOWN-GAP
 ````
 
-- [ ] **Step 8: Write `test/fixtures/comments.ts`**
+- [x] **Step 8: Write `test/fixtures/comments.ts`**
 
 ````ts
   x = 1; // line comment
@@ -846,7 +846,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //    ^ default
 ````
 
-- [ ] **Step 9: Write `test/fixtures/strings.ts` and `test/fixtures/templates.ts`**
+- [x] **Step 9: Write `test/fixtures/strings.ts` and `test/fixtures/templates.ts`**
 
 `strings.ts`:
 
@@ -907,7 +907,7 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //     ^^^^^^^^^^^^^^^^^^ constant.tplLiterals.expression KNOWN-GAP
 ````
 
-- [ ] **Step 10: Write `test/fixtures/jsx.tsx`**
+- [x] **Step 10: Write `test/fixtures/jsx.tsx`**
 
 ````tsx
   const e = <div className="x">hi {y}</div>;
@@ -937,16 +937,16 @@ assertion here means a rule regressed, not that the fixture needs updating.
 //                  ^ statement.tag KNOWN-GAP
 ````
 
-- [ ] **Step 11: Run the fixtures**
+- [x] **Step 11: Run the fixtures**
 
 Run: `cd test && go test -run TestFixtures -v ./... 2>&1 | grep -E '^(=== RUN|--- |ok|FAIL)'`
 Expected: twelve `--- PASS: TestFixtures/<file>` lines and `ok`. A failure prints `file:line: want <group>, got <groups>` with the code line and carets; fix the fixture only if it is a transcription error, never by copying the "got" groups.
 
-- [ ] **Step 12: Check that the fixtures bite**
+- [x] **Step 12: Check that the fixtures bite**
 
 Temporarily change `constant.string.regex` to `constant.string.regexX` in `typescript-rules.yaml`, run `cd test && go test -run TestFixtures ./...`, and expect failures in `regex.ts`, `comments.ts`, `strings.ts` and `templates.ts`. Then undo the change with `git checkout -- typescript-rules.yaml` (the file is committed after Task 1, so this restores it exactly).
 
-- [ ] **Step 13: Commit**
+- [x] **Step 13: Commit**
 
 ```bash
 git add test/fixtures
@@ -967,7 +967,7 @@ git commit -m "test(syntax): add fixtures for every rule section"
 - Consumes: `Load`, `LoadFixtures`, `Check`, `Defs`, `Fixture`, `root`.
 - Produces: `type Mutant struct{ File string; Line int; Desc string; YAML []byte }`; `func Mutants(file string, src []byte) ([]Mutant, error)`; `TestEveryRuleIsCovered`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ````go
 package syntaxtest
@@ -1080,12 +1080,12 @@ func caught(defs Defs, fixtures []*Fixture) bool {
 }
 ````
 
-- [ ] **Step 2: Run them to see them fail**
+- [x] **Step 2: Run them to see them fail**
 
 Run: `cd test && go test ./...`
 Expected: FAIL to compile with `undefined: Mutants`.
 
-- [ ] **Step 3: Write the mutant generator**
+- [x] **Step 3: Write the mutant generator**
 
 ````go
 package syntaxtest
@@ -1202,7 +1202,7 @@ func mapValue(m *yaml.Node, key string) *yaml.Node {
 }
 ````
 
-- [ ] **Step 4: Run the tests and read the uncovered list**
+- [x] **Step 4: Run the tests and read the uncovered list**
 
 Run: `cd test && go mod tidy && go test ./...`
 Expected: `TestMutants` passes; `TestEveryRuleIsCovered` FAILS with exactly:
@@ -1223,7 +1223,7 @@ Why each one is uncovered:
 - Lines 37 `statement.var`, 38 `statement.let` and 41 `statement.function` are dead: the late copies (`statement.let`/`statement.var` after the `let`/`var` name reset, and `statement.function: "\\bfunction\\b\\s*\\*?"`) paint every match again.
 - Line 86 `statement: "\\benum\\b"` is dead: `enum` is in the second keyword list, which runs after `identifier.const`, and no later rule resets it.
 
-- [ ] **Step 5: Add the missing assertion and delete the dead rules**
+- [x] **Step 5: Add the missing assertion and delete the dead rules**
 
 In `test/fixtures/keywords.ts`, the code line `    default: {` gets a second assertion line directly under its existing one:
 
@@ -1342,14 +1342,14 @@ The final `test/fixtures/keywords.ts`:
 //                            ^^^^^^^ statement
 ````
 
-- [ ] **Step 6: Run everything, then prove the "fix it first" guard**
+- [x] **Step 6: Run everything, then prove the "fix it first" guard**
 
 Run: `cd test && go test ./...`
 Expected: `ok`.
 
 Then break one fixture on purpose: change `//  ^^^^^^ statement` under `  switch (k) { case 1: break; }` in `keywords.ts` to `//  ^^^^^^ statement.class`, run `go test -run TestEveryRuleIsCovered ./...`, and expect `TestFixtures fails; fix it first, or every mutant looks caught`. Revert the change and rerun: `ok`.
 
-- [ ] **Step 7: Check the samples render the same**
+- [x] **Step 7: Check the samples render the same**
 
 The deletions must not change any colour. Save this temporary program as
 `test/cmd/samecolours/main.go`:
@@ -1407,7 +1407,7 @@ rm -r cmd/samecolours rules-before.yaml
 
 Expected: four lines, each ending `same: true`. Do not commit the program.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add test/mutate.go test/mutate_test.go test/go.mod test/go.sum test/fixtures/keywords.ts
@@ -1430,7 +1430,7 @@ git commit -m "fix(syntax): delete five rules that later rules repaint"
 - Consumes: the `test/` module from Tasks 1–4.
 - Produces: `pnpm test`; a `test` workflow on push and pull request.
 
-- [ ] **Step 1: Add the script**
+- [x] **Step 1: Add the script**
 
 In `package.json`, add `"test": "cd test && go test ./..."` to `scripts`, so the block reads:
 
@@ -1445,7 +1445,7 @@ In `package.json`, add `"test": "cd test && go test ./..."` to `scripts`, so the
 Run: `pnpm test`
 Expected: `ok  github.com/jv-k/micro-typescript-syntax/test`.
 
-- [ ] **Step 2: Add the workflow**
+- [x] **Step 2: Add the workflow**
 
 `.github/workflows/test.yml`:
 
@@ -1472,7 +1472,7 @@ jobs:
 
 Check the syntax locally: `ruby -ryaml -e 'YAML.load_file(".github/workflows/test.yml")' && echo valid` → `valid`.
 
-- [ ] **Step 3: Keep fixtures LF and the tests out of archives**
+- [x] **Step 3: Keep fixtures LF and the tests out of archives**
 
 Append to `.gitattributes`:
 
@@ -1482,7 +1482,7 @@ docs/ export-ignore
 test/fixtures/** text eol=lf
 ```
 
-- [ ] **Step 4: Document the tests in CONTRIBUTING**
+- [x] **Step 4: Document the tests in CONTRIBUTING**
 
 Add two rows to the `## Files` table, after the `dev/` row:
 
@@ -1535,7 +1535,7 @@ tests fail and show the rule. Then do one of these:
 - Delete the rule, if a different rule already does its work.
 ````
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add package.json .github/workflows/test.yml .gitattributes CONTRIBUTING.md
@@ -1556,7 +1556,7 @@ git commit -m "ci: run the rule tests on push and pull request"
 - Consumes: `syntaxtest.Load`, `syntaxtest.Groups`.
 - Produces: `go run ./cmd/dump [-root ..] FILE...` printing `{"<path>": [["group", ...], ...]}`; `pnpm gaps` writing `test/gaps/REPORT.md`.
 
-- [ ] **Step 1: Write the dump command**
+- [x] **Step 1: Write the dump command**
 
 ````go
 // Command dump prints micro's group for every character of each file as
@@ -1605,7 +1605,7 @@ func main() {
 Run: `cd test && go run ./cmd/dump ../sample.ts | head -c 120`
 Expected: starts with `{"../sample.ts":[[` followed by group strings.
 
-- [ ] **Step 2: Pin the corpus**
+- [x] **Step 2: Pin the corpus**
 
 `test/gaps/corpus.json`:
 
@@ -1648,7 +1648,7 @@ Expected: starts with `{"../sample.ts":[[` followed by group strings.
 ]
 ````
 
-- [ ] **Step 3: Write the fetcher**
+- [x] **Step 3: Write the fetcher**
 
 `test/gaps/fetch.mjs`:
 
@@ -1688,12 +1688,12 @@ Append to `.gitignore`:
 test/gaps/.corpus/
 ```
 
-- [ ] **Step 4: Fetch the corpus**
+- [x] **Step 4: Fetch the corpus**
 
 Run: `node test/gaps/fetch.mjs && find test/gaps/.corpus -type f | xargs wc -l | tail -1`
 Expected: fourteen `fetched …` lines, then `6133 total`. Run it again: no output (all cached). `git status --short` shows no `.corpus` paths.
 
-- [ ] **Step 5: Check a bad pin fails cleanly**
+- [x] **Step 5: Check a bad pin fails cleanly**
 
 ```bash
 printf '[{"repo":"vercel/next.js","sha":"0000000000000000000000000000000000000000","paths":["nope.ts"]}]' > /tmp/bad-corpus.json
@@ -1704,7 +1704,7 @@ rm /tmp/bad-corpus.json
 
 Expected: `Error: fetch https://raw.githubusercontent.com/vercel/next.js/0000…/nope.ts: 404`, `exit 1`, and `ls` reports no such file.
 
-- [ ] **Step 6: Add TypeScript and the script**
+- [x] **Step 6: Add TypeScript and the script**
 
 ```bash
 pnpm add -D --save-exact typescript@6.0.3
@@ -1712,7 +1712,7 @@ pnpm add -D --save-exact typescript@6.0.3
 
 Add `"gaps": "node test/gaps/fetch.mjs && node test/gaps/report.mjs"` to `scripts` in `package.json`.
 
-- [ ] **Step 7: Write the report**
+- [x] **Step 7: Write the report**
 
 `test/gaps/report.mjs`:
 
@@ -1901,7 +1901,7 @@ await writeFile(join(here, 'REPORT.md'), out.join('\n') + '\n');
 console.log(`agreement ${pct(totals.ok)}%: wrong ${totals.wrong}, missing ${totals.missing}; wrote test/gaps/REPORT.md`);
 ````
 
-- [ ] **Step 8: Run it**
+- [x] **Step 8: Run it**
 
 Run: `pnpm gaps`
 Expected (rules as after Task 4): `agreement 94.7%: wrong 789, missing 8106; wrote test/gaps/REPORT.md`. The top rows of `REPORT.md`:
@@ -1922,7 +1922,7 @@ Expected (rules as after Task 4): `agreement 94.7%: wrong 789, missing 8106; wro
 
 Small differences in the counts are acceptable only if the corpus or rules differ from the pins; with the pins above the numbers are exact.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add test/cmd/dump/main.go test/gaps/corpus.json test/gaps/fetch.mjs test/gaps/report.mjs test/gaps/REPORT.md package.json pnpm-lock.yaml .gitignore

@@ -1,6 +1,6 @@
 # Highlight tests and gap report — design
 
-Date: 2026-10-02. Status: awaiting review.
+Date: 2026-10-02. Status: implemented. Gaps b, c, d and g closed; see `docs/superpowers/plans/`.
 
 ## Goal
 

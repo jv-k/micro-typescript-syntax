@@ -47,7 +47,7 @@ For a key such as `undefined: SyntaxKind.UndefinedKeyword` that is wrong: the
 key is a plain name. Without this fix, Task 4's correct key reset would show up
 as 9 characters of new "missing colour".
 
-- [ ] **Step 1: Change the mapping**
+- [x] **Step 1: Change the mapping**
 
 ````diff
 @@ -51,4 +51,8 @@ function classify(path, text) {
@@ -61,12 +61,12 @@ as 9 characters of new "missing colour".
        // `as const` parses as a reference to a type named `const`
 ````
 
-- [ ] **Step 2: Regenerate the report**
+- [x] **Step 2: Regenerate the report**
 
 Run: `pnpm gaps`
 Expected: `agreement 94.7%: wrong 798, missing 8106; wrote test/gaps/REPORT.md`. The row `identifier → constant` grows from 4 to 13: master colours these keys as constants, and the report now counts that as wrong.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add test/gaps/report.mjs test/gaps/REPORT.md
@@ -86,7 +86,7 @@ git commit -m "fix(test): count undefined and NaN keys as names in the gap repor
 - Consumes: the Task 1 report baseline.
 - Produces: three `type` rules ahead of the symbol rules. Task 3 relies on the symbol rules after them still repainting `<`, `>`, `,`, `=`.
 
-- [ ] **Step 1: Write the failing fixture**
+- [x] **Step 1: Write the failing fixture**
 
 `test/fixtures/declared-types.ts`:
 
@@ -131,12 +131,12 @@ git commit -m "fix(test): count undefined and NaN keys as names in the gap repor
 //           ^^^^^^^ default
 ````
 
-- [ ] **Step 2: Run it to see it fail**
+- [x] **Step 2: Run it to see it fail**
 
 Run: `cd test && go test -run TestFixtures ./... 2>&1 | grep -c 'want '`
 Expected: `11` (every `type` assertion; the keyword, operator and `className` assertions already hold).
 
-- [ ] **Step 3: Add the rules**
+- [x] **Step 3: Add the rules**
 
 The rules paint each whole declaration as `type`. The symbol rules and keyword rules that come after them repaint everything except the names, and the late `identifier.function` rule repaints a function's own name.
 
@@ -156,17 +156,17 @@ The rules paint each whole declaration as `type`. The symbol rules and keyword r
      - symbol.operator: "[-+/*=<>!~%?:&|^]"
 ````
 
-- [ ] **Step 4: Run all tests**
+- [x] **Step 4: Run all tests**
 
 Run: `cd test && go test ./...`
 Expected: `ok` (fixtures and rule coverage).
 
-- [ ] **Step 5: Measure**
+- [x] **Step 5: Measure**
 
 Run: `pnpm gaps`
 Expected: `agreement 96.0%: wrong 798, missing 5914`. The `interfaceName → (none)` row is gone and `typeParameterName → (none)` drops from 149 to 38 (the rest are method signatures such as `lookAhead<T>(…)`, which this gap does not cover).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add test/fixtures/declared-types.ts typescript-rules.yaml test/gaps/REPORT.md
@@ -186,7 +186,7 @@ git commit -m "feat(syntax): colour declared type names and type parameters"
 - Consumes: Task 2's rules (unchanged here).
 - Produces: widened repaint rules after the keyword-as-name resets: `symbol.brackets: "[()\\]]"`, `symbol.punctuation: "[.,;]"`, `symbol.operator: "[?:=!]"`. Task 4 inserts its block after these.
 
-- [ ] **Step 1: Write the failing assertions**
+- [x] **Step 1: Write the failing assertions**
 
 Append to `test/fixtures/keywords-as-names.ts`:
 
@@ -209,12 +209,12 @@ Append to `test/fixtures/keywords-as-names.ts`:
 //                                           ^^^^ statement.const
 ````
 
-- [ ] **Step 2: Run them to see them fail**
+- [x] **Step 2: Run them to see them fail**
 
 Run: `cd test && go test -run TestFixtures ./... 2>&1 | grep -c 'want '`
 Expected: `6` (each `type` used as a variable is `statement.const`).
 
-- [ ] **Step 3: Reset `type` before `;`, `,`, `)`, `]`, `}`, `==`/`===`/`!=`, a lone `=`, or the line end, and widen the repaints**
+- [x] **Step 3: Reset `type` before `;`, `,`, `)`, `]`, `}`, `==`/`===`/`!=`, a lone `=`, or the line end, and widen the repaints**
 
 The reset consumes the next character, so the three repaint rules after it now cover `)`, `]`, `,`, `;`, `=` and `!` as well. They repaint symbols that are always these groups at this point in the file.
 
@@ -236,7 +236,7 @@ The reset consumes the next character, so the three repaint rules after it now c
 
 Leave the early `symbol.punctuation: "[.,;]"` (just after `symbol.operator: "[-+/*=<>!~%?:&|^]"`) in place for now.
 
-- [ ] **Step 4: Run all tests and read the coverage failure**
+- [x] **Step 4: Run all tests and read the coverage failure**
 
 Run: `cd test && go test ./...`
 Expected: fixtures pass; `TestEveryRuleIsCovered` FAILS with exactly:
@@ -247,7 +247,7 @@ Expected: fixtures pass; `TestEveryRuleIsCovered` FAILS with exactly:
 
 The widened `symbol.punctuation: "[.,;]"` in the keyword-as-name block repaints every `.`, `,` and `;`, and nothing between the two rules paints those characters, so the early rule is dead.
 
-- [ ] **Step 5: Delete the dead rule**
+- [x] **Step 5: Delete the dead rule**
 
 ````diff
 @@ -33,5 +33,4 @@ rules:
@@ -261,12 +261,12 @@ The widened `symbol.punctuation: "[.,;]"` in the keyword-as-name block repaints 
 Run: `cd test && go test ./...`
 Expected: `ok`.
 
-- [ ] **Step 6: Measure**
+- [x] **Step 6: Measure**
 
 Run: `pnpm gaps`
 Expected: `agreement 96.0%: wrong 786, missing 5914`. The `identifier → statement.const` row is gone.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add test/fixtures/keywords-as-names.ts typescript-rules.yaml test/gaps/REPORT.md
@@ -286,7 +286,7 @@ git commit -m "fix(syntax): show type as a plain name when it is a variable"
 - Consumes: Task 3's repaint rules (earlier in the file; unchanged).
 - Produces: the block `# ─── Keywords used as plain names, again`, followed by the moved `default:` label rule and `symbol.braces`. Task 5 inserts its rule between them.
 
-- [ ] **Step 1: Write the failing assertions**
+- [x] **Step 1: Write the failing assertions**
 
 Append to `test/fixtures/keywords-as-names.ts`:
 
@@ -322,12 +322,12 @@ Append to `test/fixtures/keywords-as-names.ts`:
 //                  ^^^^ constant
 ````
 
-- [ ] **Step 2: Run them to see them fail**
+- [x] **Step 2: Run them to see them fail**
 
 Run: `cd test && go test -run TestFixtures ./... 2>&1 | grep -c 'want '`
 Expected: `14`. The ternary and `case null:` assertions already hold; they guard against the fix going too far.
 
-- [ ] **Step 3: Add the late key reset and move the label rule after it**
+- [x] **Step 3: Add the late key reset and move the label rule after it**
 
 Literals (`null`, `true`, …), type keywords (`any`, `string`, …) and the late `const`/`let`/`var`/`function` rules run after the existing key reset, so they paint these keys again. The new reset runs after all of them. It needs `{`, `,` or the line start before the key so that ternaries and `case` labels keep their colours. The `default:` label rule moves below it because the new `[?:]` repaint would otherwise recolour the label's colon; no rule between the old and new positions touches `default:`.
 
@@ -363,17 +363,17 @@ Literals (`null`, `true`, …), type keywords (`any`, `string`, …) and the lat
      # A `/` is a regex, not division, when no word character touches it
 ````
 
-- [ ] **Step 4: Run all tests**
+- [x] **Step 4: Run all tests**
 
 Run: `cd test && go test ./...`
 Expected: `ok`.
 
-- [ ] **Step 5: Measure**
+- [x] **Step 5: Measure**
 
 Run: `pnpm gaps`
 Expected: `agreement 96.1%: wrong 662, missing 5914`. The rows `identifier → type.types`, `identifier → statement.let`, `→ statement.var`, `→ statement.function`, `→ constant.bool.*` and `→ constant` are gone.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add test/fixtures/keywords-as-names.ts typescript-rules.yaml test/gaps/REPORT.md
@@ -392,7 +392,7 @@ git commit -m "fix(syntax): show keyword-named keys such as null: and const: as 
 **Interfaces:**
 - Consumes: Task 4's block position.
 
-- [ ] **Step 1: Write the failing assertions**
+- [x] **Step 1: Write the failing assertions**
 
 Append to `test/fixtures/keywords-as-names.ts`:
 
@@ -409,12 +409,12 @@ Append to `test/fixtures/keywords-as-names.ts`:
 //               ^^^^^ statement.const
 ````
 
-- [ ] **Step 2: Run them to see them fail**
+- [x] **Step 2: Run them to see them fail**
 
 Run: `cd test && go test -run TestFixtures ./... 2>&1 | grep -c 'want '`
 Expected: `5`. The `$el` and second `const` assertions already hold.
 
-- [ ] **Step 3: Reset a keyword joined to `$`**
+- [x] **Step 3: Reset a keyword joined to `$`**
 
 The word list is every word a keyword, type-keyword or literal rule paints. It goes after the other resets so nothing repaints these names.
 
@@ -430,17 +430,17 @@ The word list is every word a keyword, type-keyword or literal rule paints. It g
      # block, or jumps; otherwise it's an object key, reset above.
 ````
 
-- [ ] **Step 4: Run all tests**
+- [x] **Step 4: Run all tests**
 
 Run: `cd test && go test ./...`
 Expected: `ok`.
 
-- [ ] **Step 5: Measure**
+- [x] **Step 5: Measure**
 
 Run: `pnpm gaps`
 Expected: `agreement 96.2%: wrong 156, missing 6167`. The `typeReference → statement` row (`core.$constructor<…>`) is gone; `typeReference → (none)` grows by the same names, which are type references the highlighter leaves plain (gap a).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add test/fixtures/keywords-as-names.ts typescript-rules.yaml test/gaps/REPORT.md
@@ -453,7 +453,7 @@ git commit -m "fix(syntax): stop matching keywords inside names with a dollar si
 
 **Files:** none committed.
 
-- [ ] **Step 1: Compare every sample with `master`'s rules**
+- [x] **Step 1: Compare every sample with `master`'s rules**
 
 Save this temporary program as `test/cmd/samecolours/main.go`:
 
@@ -537,7 +537,7 @@ Expected, exactly:
 
 All are declarations (gap b), except `sample.ts:109`, where only the spaces around `=` change from no group to `default`. Both render plain, so nothing visible changes there.
 
-- [ ] **Step 2: Note the remaining gaps for the user**
+- [x] **Step 2: Note the remaining gaps for the user**
 
 Read the top rows of `test/gaps/REPORT.md` and report what is left, largest first. On the scratch run these were:
 - **a:** user type names in type positions (`typeReference → (none)`).
