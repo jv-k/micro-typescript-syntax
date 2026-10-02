@@ -32,16 +32,19 @@ func TestParseFixture(t *testing.T) {
 }
 
 func TestParseFixtureErrors(t *testing.T) {
-	for name, src := range map[string]string{
-		"tab":       "\tx;\n// ^ statement\n",
-		"crlf":      "  x;\r\n//^ statement\r\n",
-		"combining": "  e\u0301;\n//^ statement\n",
-		"no code":   "// ^ statement\n",
-		"past end":  "x;\n//  ^^^ statement\n",
-		"no assert": "x;\n",
+	for name, c := range map[string]struct{ src, want string }{
+		"tab":            {"\tx;\n// ^ statement\n", "contains a tab"},
+		"crlf":           {"  x;\r\n//^ statement\r\n", "CRLF"},
+		"combining":      {"  e\u0301;\n//^ statement\n", ":1: contains a combining mark"},
+		"no code":        {"// ^ statement\n", ":1: assertion before any code line"},
+		"past end":       {"x;\n//  ^^^ statement\n", ":2: carets run past"},
+		"no assert":      {"x;\n", "no assertions"},
+		"bad known gap":  {"  x;\n//^ statement\n//^ statement KNOWN_GAP\n", ":3: malformed assertion"},
+		"bad group char": {"  x;\n//^ statement\n//^ group-2\n", ":3: malformed assertion"},
 	} {
-		if _, err := ParseFixture(name+".ts", src); err == nil {
-			t.Errorf("%s: no error", name)
+		_, err := ParseFixture(name+".ts", c.src)
+		if err == nil || !strings.Contains(err.Error(), c.want) {
+			t.Errorf("%s: got error %v, want one containing %q", name, err, c.want)
 		}
 	}
 }

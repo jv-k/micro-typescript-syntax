@@ -38,6 +38,10 @@ type Failure struct {
 	Got       []string // groups of the asserted columns
 }
 
+// caretLine is any line that looks like an assertion, so a typo in one is an
+// error instead of a silent code line.
+var caretLine = regexp.MustCompile(`^\s*//\s*\^`)
+
 var assertionLine = regexp.MustCompile(`^(\s*//\s*)(\^+)\s+(!?)([A-Za-z][A-Za-z.]*)(\s+KNOWN-GAP)?\s*$`)
 
 // ParseFixture splits a fixture into code lines and assertions. An assertion
@@ -59,6 +63,9 @@ func ParseFixture(name, src string) (*Fixture, error) {
 			return nil, fmt.Errorf("%s:%d: contains a combining mark; caret columns can't line up", name, i+1)
 		}
 		m := assertionLine.FindStringSubmatch(line)
+		if m == nil && caretLine.MatchString(line) {
+			return nil, fmt.Errorf("%s:%d: malformed assertion; want carets, a group or !group, and optional KNOWN-GAP", name, i+1)
+		}
 		if m == nil {
 			f.Code = append(f.Code, line)
 			f.CodeLine = append(f.CodeLine, i+1)
