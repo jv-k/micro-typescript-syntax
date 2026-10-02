@@ -31,15 +31,25 @@ git clone https://github.com/jv-k/micro-typescript-syntax \
 
 Then restart micro.
 
-To update the plugin, do a `git pull` in the plugin directory. Then restart
-micro.
+### Update
+
+To update the plugin, pull the latest version into the plugin directory:
+
+```sh
+git -C "${MICRO_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}/micro}/plug/typescript_syntax" pull
+```
+
+Then restart micro.
+
+### Reload
 
 The micro `reload` command does not load plugins again. After a `reload`,
 restart micro to get the colours back.
 
 ## Install with an agent
 
-To let a coding agent install the plugin, give it this prompt:
+To let a coding agent install the plugin, give it this prompt. To update an
+existing install, give the agent the same prompt again.
 
 ```text
 Install the micro-typescript-syntax plugin for the micro text editor.
@@ -96,6 +106,9 @@ for f in typescript tsx jsx-tags; do
   ln -s "$PWD/$f.yaml" ~/.config/micro/syntax/$f.yaml
 done
 ```
+
+To update these files, do a `git pull` in this repository. The links then
+point to the new versions.
 
 To test a change:
 
