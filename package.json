@@ -4,6 +4,7 @@
   "description": "TypeScript and TSX syntax highlighting for the micro editor",
   "license": "ISC",
   "scripts": {
-    "bump-release": "bash scripts/bump-release.sh"
+    "bump-release": "bash scripts/bump-release.sh",
+    "screenshots": "./dev/screenshots.sh"
   }
 }

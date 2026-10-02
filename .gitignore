@@ -4,3 +4,6 @@
 
 # pnpm
 node_modules/
+
+# Screenshot scratch output
+img/tmp/
