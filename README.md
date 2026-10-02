@@ -36,14 +36,6 @@ The syntax files also identify common React and Next.js types, for example
 `ReactNode`, `FC` and `NextPage`. They also identify React hooks, for example
 `useState` and `useRouter`.
 
-| File | Function |
-|---|---|
-| `typescript-rules.yaml` | Contains the TypeScript rules. |
-| `typescript.yaml` | Applies to `.ts`, `.mts` and `.cts` files. It uses the TypeScript rules. |
-| `tsx.yaml` | Applies to `.tsx` files. It uses the TypeScript rules, then the JSX rules. |
-| `jsx-tags.yaml` | Contains the JSX rules. Only `tsx.yaml` uses this file. |
-| `typescript_syntax.lua`, `repo.json` | Make this repository a micro plugin. |
-
 ## Install
 
 This repository is a micro plugin. To install it, clone it into the micro
@@ -119,66 +111,6 @@ A colour scheme can also set colours for these groups:
 | `identifier.attribute` | JSX attributes |
 | `identifier.function.hook` | React hooks |
 
-## Change the rules
-
-The `reload` command does not load plugins again. Thus, to test changes with
-`reload`, link the syntax files into the micro syntax directory. Do this
-instead of the plugin install:
-
-```sh
-mkdir -p ~/.config/micro/syntax
-for f in typescript typescript-rules tsx jsx-tags; do
-  ln -s "$PWD/$f.yaml" ~/.config/micro/syntax/$f.yaml
-done
-```
-
-To update these files, do a `git pull` in this repository. The links then
-point to the new versions.
-
-To test a change:
-
-1. Open `sample.ts` or `sample.tsx` in micro.
-2. Edit a syntax file.
-3. Push `Ctrl-e` and type `reload`. Micro loads the changed syntax files.
-4. Examine the colours in the sample file.
-
-The second half of `sample.ts` contains special cases for the rules. All of
-`sample.tsx` contains special cases.
-
-Micro gives a colour to all of the text that a rule finds. A rule cannot give a
-colour to only one part of that text. Thus some rules give a colour to a large
-part of the text. Then a subsequent rule changes the colour of a smaller part.
-For these rules, the sequence is important. The comments in `typescript.yaml`
-identify these rules.
-
-## Screenshots
-
-To make new screenshots in `img/`, run this command:
-
-```sh
-pnpm screenshots
-```
-
-The command needs [vhs](https://github.com/charmbracelet/vhs) and micro. It
-makes one screenshot for each colour scheme, with `dev/sample/demo.ts` and
-`dev/sample/demo.tsx` in two panes. Micro starts with a clean configuration in
-`img/tmp/`, so your own micro settings do not change the result. Set `SCHEMES`
-to make only some screenshots, for example `SCHEMES="mojokai-tc" pnpm
-screenshots`.
-
-## Release
-
-To release a new version, run this command on `master`:
-
-```sh
-pnpm bump-release [patch|minor|major|X.Y.Z]
-```
-
-The default is `patch`. The command changes the version in
-`typescript_syntax.lua` and adds the version to `repo.json`. Then it commits,
-tags and pushes the release. It shows the changes and asks before it starts.
-Use `--dry-run` to see the changes only.
-
 ## Edge cases
 
 Micro highlights one line at a time with Go regular expressions, so a few cases
@@ -194,3 +126,12 @@ use approximate rules:
 - `${…}` handles one level of nested braces.
 - Micro versions without [micro#4022](https://github.com/micro-editor/micro/pull/4022)
   can drop the escape colours in some strings.
+
+## Contributing
+
+To change the rules, update the screenshots, or make a release, refer to
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[ISC](LICENSE)
