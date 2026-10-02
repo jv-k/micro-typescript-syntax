@@ -97,6 +97,23 @@ tests fail and show the rule. Then do one of these:
 - Add a test that needs the rule.
 - Delete the rule, if a different rule already does its work.
 
+### Gap report
+
+The gap report compares the colours from micro with the TypeScript compiler.
+It uses real TypeScript and TSX files from other projects. The file
+`test/gaps/corpus.json` gives each project and commit.
+
+```sh
+pnpm install
+pnpm gaps
+```
+
+The first run downloads the files, so it needs a network connection. The
+report goes to `test/gaps/REPORT.md`. The biggest differences come first.
+
+After you change a rule, run `pnpm gaps` again. Make sure that no new rows
+appear in "Wrong colour". Then commit `REPORT.md` with the rule change.
+
 ## Update the screenshots
 
 To make new screenshots in `img/`, run this command:
