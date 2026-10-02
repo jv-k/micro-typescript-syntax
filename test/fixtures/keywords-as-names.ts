@@ -91,3 +91,15 @@
     this :
 //  ^^^^ statement
     that;
+  // A declared name that starts with `$` and a keyword keeps its colour.
+  export function $constructor<T>(a: T) {}
+//                ^^^^^^^^^^^^ identifier.function
+  function $if() {} export const $type = 2;
+//         ^^^ identifier.function
+//                               ^^^^^ identifier.const
+//                         ^^^^^ statement.const
+  x = $const + $let + var$ + $function;
+//    ^^^^^^ default
+//             ^^^^ default
+//                    ^^^^ default
+//                           ^^^^^^^^^ default

@@ -79,15 +79,23 @@ rules:
     - constant.number: "\\b([0-9](_?[0-9])*|0[xX][0-9a-fA-F](_?[0-9a-fA-F])*|0[bB][01](_?[01])*|0[oO][0-7](_?[0-7])*)n?\\b"
 
     # ─── Late name fixes ─────────────────────────────────────────────────────
+    # `$` is not a word character, so `\b` finds keywords inside names such
+    # as `$constructor` or `type$`. Those names are plain. This runs before the
+    # late name fixes, which repaint `function $if` and `const $type`.
+    - default: "\\$+(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\b|\\b(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\$"
     - identifier.function: "\\bfunction\\b\\s*\\*?\\s*[A-Za-z_$][A-Za-z0-9_$]*"
     - statement.function: "\\bfunction\\b\\s*\\*?"
     # A const named like a keyword (`const type = …`) lost its colour above
     - identifier.const: "\\bconst\\s+(as|async|declare|from|get|is|module|namespace|of|readonly|set|type|using|any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
+    - identifier.const: "\\bconst\\s+\\$+[A-Za-z0-9_$]*"
     - statement.const: "\\bconst\\b"
     # Same for `let` and `var`, whose names are otherwise uncoloured
     - default: "\\b(let|var)\\s+(as|async|declare|from|get|is|module|namespace|of|readonly|set|type|using|any|bigint|boolean|never|number|object|string|symbol|unknown)\\b"
     - statement.let: "\\blet\\b"
     - statement.var: "\\bvar\\b"
+    # The late keyword rules above find `const`, `let`, `var` and `function`
+    # in `$` names again (`$const`, `var$`); reset those once more.
+    - default: "\\$+(const|function|let|var)\\b|\\b(const|function|let|var)\\$+"
 
     # ─── Keywords used as plain names, again ────────────────────────────────
     # The literal, type-keyword and late keyword rules above repaint keys
@@ -98,10 +106,6 @@ rules:
     - default: "^\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??:|[{,]\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??\\s*:"
     - symbol.punctuation: ","
     - symbol.operator: "[?:]"
-
-    # `$` is not a word character, so `\b` finds keywords inside names such
-    # as `$constructor` or `type$`. Those names are plain.
-    - default: "\\$+(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\b|\\b(abstract|accessor|any|as|asserts|async|await|bigint|boolean|break|case|catch|class|const|constructor|continue|debugger|declare|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|infer|instanceof|interface|is|keyof|let|module|namespace|NaN|never|new|null|number|object|of|override|package|private|protected|public|readonly|require|return|satisfies|set|static|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unique|unknown|using|var|void|while|with|yield)\\$"
 
     # `default:` is a switch label when the line ends after it, opens a
     # block, or jumps; otherwise it's an object key, reset above.
