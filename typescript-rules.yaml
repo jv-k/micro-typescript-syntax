@@ -93,8 +93,9 @@ rules:
     # The literal, type-keyword and late keyword rules above repaint keys
     # such as `null:`, `any:` or `const:`. Reset those keys again, but only
     # after `{`, `,` or at the start of a line, so `a ? null : b` and
-    # `case null:` keep their colours.
-    - default: "(^|[{,])\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??\\s*:"
+    # `case null:` keep their colours. At the start of a line the colon must
+    # follow the key directly: a ternary arm reads `null :`, a key `null:`.
+    - default: "^\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??:|[{,]\\s*(any|bigint|boolean|const|false|function|let|NaN|never|null|number|object|string|super|symbol|this|true|undefined|unknown|var|void)\\??\\s*:"
     - symbol.punctuation: ","
     - symbol.operator: "[?:]"
 

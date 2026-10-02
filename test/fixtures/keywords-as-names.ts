@@ -78,3 +78,16 @@
   const $el = 1; const $type = 2;
 //      ^^^ identifier.const
 //               ^^^^^ statement.const
+  // A ternary arm at the start of a line is not a key.
+  const v = flag ?
+    null :
+//  ^^^^ constant
+    undefined;
+  type T<U> = U extends string ?
+    never :
+//  ^^^^^ type.types
+    U;
+  const w = ok ?
+    this :
+//  ^^^^ statement
+    that;
