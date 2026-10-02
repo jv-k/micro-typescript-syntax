@@ -10,6 +10,31 @@ filetype: typescript-rules
 # below lean on that: a broad rule paints a span, a later rule repaints part
 # of it. Strings and comments are regions, which always beat patterns.
 rules:
+    # ─── Type annotations ────────────────────────────────────────────────────
+    # A type after a colon, where the colon can only start an annotation. The
+    # type is a name with dots, `<…>` arguments (three levels deep) and `[]`,
+    # joined by `|` or `&`. These rules paint the names before the colon as
+    # well; the reset after them clears those names, and every rule below this
+    # block repaints keywords, symbols and literals inside the type.
+    # `const x: T`, `let y!: T`
+    - type: "\\b(const|let|var)\\s+[A-Za-z_$][A-Za-z0-9_$]*!?\\s*:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    # Return types and destructured parameters: `): T`, `}: Props`. No space
+    # before the colon, which rules out a ternary such as `f() : b`.
+    - type: "[)}]:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    # Parameters on one line, from the `(`: `(a: A, b?: B`. An object literal
+    # cannot follow `(` without a `{`. A parameter on a line of its own reads
+    # like an object key (`a: B,`), so it stays plain.
+    - type: "\\(\\s*[A-Za-z_$][A-Za-z0-9_$]*\\??:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*(\\s*,\\s*[A-Za-z_$][A-Za-z0-9_$]*\\??:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*)*"
+    # Property signatures and class fields end with `;`, object keys do not:
+    # `kind: Kind;`. No space before the colon, unlike `a ? b : c;`.
+    - type: "[A-Za-z_$][A-Za-z0-9_$]*!?:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*\\s*;"
+    # Optional members and parameters: `a?: T`
+    - type: "\\?:\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    - type: "\\bsatisfies\\s+((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    # Clear the names before the colon, and the value after `typeof`.
+    - default: "[A-Za-z_$][A-Za-z0-9_$]*\\s*[?!]?\\s*:"
+    - default: "\\btypeof\\s+[A-Za-z_$][A-Za-z0-9_$.]*"
+
     # ─── Declared names ──────────────────────────────────────────────────────
     # These come first so the rules after them repaint everything in each
     # match except the name.

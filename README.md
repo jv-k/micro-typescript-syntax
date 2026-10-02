@@ -123,6 +123,11 @@ use approximate rules:
   string, for example `(a = f()) =>`.
 - In a ternary that ends in an arrow function, such as `ok ? a : (b) => b`, `a`
   has the function name colour.
+- A type annotation has no type colour when it is on a line of its own and ends
+  in a comma, for example a parameter `token: Kind,`: an object key reads the
+  same.
+- The types of an arrow function that has a name, such as
+  `const f = (a: A): B =>`, have no colour.
 - In JSX text, keywords such as `for` and `in` have the keyword colour.
 - A JSX tag directly after a word, such as `text<b>`, has no tag colour.
 - `${…}` handles one level of nested braces.
