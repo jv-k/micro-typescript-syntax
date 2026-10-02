@@ -29,6 +29,7 @@
 //    ^^^^^^^^ statement
     default: {
 //  ^^^^^^^^ statement
+//           ^ symbol.braces
     default: return;
 //  ^^^^^^^^ statement
   }
