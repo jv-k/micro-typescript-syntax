@@ -1,6 +1,7 @@
-// fetch.mjs: download the corpus in corpus.json into .corpus/, pinned by
-// commit, skipping files already there.
-import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
+// fetch.mjs: download the corpus in corpus.json into .corpus/<repo>/<sha>/,
+// skipping files already there. The SHA is in the path, so changing a pin
+// downloads again instead of reusing a file from another commit.
+import { mkdir, readFile, writeFile, access, rename } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,7 +11,7 @@ const corpus = JSON.parse(await readFile(process.env.CORPUS ?? join(here, 'corpu
 
 for (const { repo, sha, paths } of corpus) {
   for (const path of paths) {
-    const dest = join(here, '.corpus', repo, path);
+    const dest = join(here, '.corpus', repo, sha, path);
     try {
       await access(dest);
       continue;
@@ -19,7 +20,9 @@ for (const { repo, sha, paths } of corpus) {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`fetch ${url}: ${res.status}`);
     await mkdir(dirname(dest), { recursive: true });
-    await writeFile(dest, await res.text());
+    // write then rename, so an interrupted download is never taken as cached
+    await writeFile(dest + '.part', await res.text());
+    await rename(dest + '.part', dest);
     console.log(`fetched ${repo}/${path}`);
   }
 }

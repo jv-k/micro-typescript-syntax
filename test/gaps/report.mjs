@@ -4,14 +4,17 @@
 import ts from 'typescript';
 import { execFileSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
-import { dirname, join, relative } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const testDir = join(here, '..');
 const corpusDir = join(here, '.corpus');
 const corpus = JSON.parse(await readFile(join(here, 'corpus.json'), 'utf8'));
-const files = corpus.flatMap(({ repo, paths }) => paths.map((p) => join(corpusDir, repo, p)));
+// path: the cached file (see fetch.mjs); name: how REPORT.md shows it
+const files = corpus.flatMap(({ repo, sha, paths }) =>
+  paths.map((p) => ({ path: join(corpusDir, repo, sha, p), name: join(repo, p) })),
+);
 
 // ─── Reference: TypeScript's classes per UTF-16 index ──────────────────────
 // The syntactic classifier calls a regex a string and a type reference an
@@ -113,14 +116,13 @@ function verdict(cls, group, inTemplate) {
 
 // ─── Compare ───────────────────────────────────────────────────────────────
 const dump = JSON.parse(
-  execFileSync('go', ['run', './cmd/dump', '-root', '..', ...files], { cwd: testDir, maxBuffer: 1 << 28 }),
+  execFileSync('go', ['run', './cmd/dump', '-root', '..', ...files.map((f) => f.path)], { cwd: testDir, maxBuffer: 1 << 28 }),
 );
 const rows = new Map();
 const totals = { ok: 0, wrong: 0, missing: 0, skippedLines: 0 };
-for (const path of files) {
+for (const { path, name } of files) {
   const text = await readFile(path, 'utf8');
   const { cls, inTemplate } = classify(path, text);
-  const name = relative(corpusDir, path);
   const lines = text.split('\n');
   let offset = 0;
   lines.forEach((line, n) => {
