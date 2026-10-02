@@ -14,6 +14,8 @@ them, refer to the [README](README.md).
 | `typescript_syntax.lua`, `repo.json` | Make this repository a micro plugin. |
 | `sample.ts`, `sample.tsx` | Special cases for the rules. |
 | `dev/` | The screenshot script and the demo files that it shows. |
+| `test/` | The tests for the rules. They use the highlighter from micro. |
+| `test/fixtures/` | Test files. Each file has the expected colours below the code. |
 
 ## Change the rules
 
@@ -54,6 +56,46 @@ colour to only one part of that text. Thus some rules give a colour to a large
 part of the text. Then a subsequent rule changes the colour of a smaller part.
 For these rules, the sequence is important. The comments in
 `typescript-rules.yaml` identify these rules.
+
+## Test the rules
+
+Run the tests after each change to a rule:
+
+```sh
+pnpm test
+```
+
+The tests need Go. They use the highlighter from micro v2.0.15, so they do not
+start micro.
+
+### Test files
+
+Each file in `test/fixtures/` contains code lines. Below a code line, a test
+line gives the expected colour group of some characters:
+
+```ts
+  const r = /ab+c/g;
+//          ^^^^^^^ constant.string.regex
+```
+
+- The `^` characters mark the columns to test. Put two spaces at the start of
+  each code line, because `//` uses the first two columns.
+- `!group` means that the columns must not have the group.
+- `default` means that the columns have no colour.
+- `KNOWN-GAP` marks a test that fails at the moment. Use it for each example
+  in the README "Edge cases" list. If a change makes a `KNOWN-GAP` test pass,
+  the tests fail. Then remove `KNOWN-GAP` and remove the edge case from the
+  README.
+
+Use spaces, not tabs. Use LF line endings.
+
+### Each rule needs a test
+
+The tests also remove each rule in turn. If no test fails without a rule, the
+tests fail and show the rule. Then do one of these:
+
+- Add a test that needs the rule.
+- Delete the rule, if a different rule already does its work.
 
 ## Update the screenshots
 

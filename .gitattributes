@@ -1,2 +1,5 @@
 dev/ export-ignore
 img/ export-ignore
+test/ export-ignore
+docs/ export-ignore
+test/fixtures/** text eol=lf
