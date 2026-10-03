@@ -130,6 +130,8 @@ use approximate rules:
   `const f = (a: A): B =>`, have no colour.
 - In JSX text, keywords such as `for` and `in` have the keyword colour.
 - A JSX tag directly after a word, such as `text<b>`, has no tag colour.
+- A JSX attribute without a value, such as `download`, has no attribute colour
+  when it follows an attribute with a string value or is on a line of its own.
 - `${…}` handles one level of nested braces.
 - A `${…}` that spans lines, or that holds another template literal, does not
   get the interpolation colour. A fix needs nested regions, which micro

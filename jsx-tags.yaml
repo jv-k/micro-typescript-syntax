@@ -3,6 +3,16 @@ filetype: jsx-tags
 # JSX rules for tsx.yaml, which includes them after the TypeScript rules so
 # these repaint on top. No `detect`: micro never picks this file on its own.
 rules:
+    # Boolean attributes on the tag's line: `<Close asChild>`, `<input disabled
+    # value={v} />`. Paint the tag up to its `>` or its first attribute with a
+    # value; the tag and attribute rules below repaint the rest. Micro hides
+    # strings from patterns, so a boolean after `a="x"` stays plain.
+    - identifier.attribute: "\\B<[A-Za-z][A-Za-z0-9_.:-]*(\\s+[A-Za-z_][A-Za-z0-9_-]*)+(\\s*/?>|\\s+[A-Za-z_][A-Za-z0-9_-]*=)"
+    - symbol.operator: "/?>"
+    # A generic arrow function, `<T extends Foo>(x: T) =>`, has the same shape.
+    - type: "\\bextends\\s+[A-Za-z_$][A-Za-z0-9_$.]*"
+    - statement: "\\bextends\\b"
+
     # Tag names: lower-case are elements, capitalised are components. `\B`
     # before an opening `<` rules out generics such as `Array<T>` and
     # `useState<T>()`; a closing `</` can't be a generic, so it needs no guard.

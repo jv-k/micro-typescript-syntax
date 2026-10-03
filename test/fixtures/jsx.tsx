@@ -19,7 +19,25 @@
   const b = <button type="button" as={Link}>x</button>;
 //                  ^^^^ identifier.attribute
 //                                ^^ identifier.attribute
+  // Boolean attributes on the tag's line, before `>` or an attribute with a value.
+  const d = <Close asChild>{b}</Close>; const i = <input disabled value={v} />;
+//                 ^^^^^^^ identifier.attribute
+//                        ^ symbol.operator
+//                                                       ^^^^^^^^ identifier.attribute
+//                                                                ^^^^^ identifier.attribute
+//                                                                       ^ default
+//                                                                          ^^ symbol.operator
+  const r = <T extends Foo>(x: T) => x; const o = <Dialog open modal>x</Dialog>;
+//             ^^^^^^^ statement
+//                     ^^^ type
+//                                                        ^^^^ identifier.attribute
+//                                                             ^^^^^ identifier.attribute
   const f = <>for in</>;
 //            ^^^ default KNOWN-GAP
   const t = <p>text<b>x</b></p>;
 //                  ^ statement.tag KNOWN-GAP
+  const q = <a href="x" download>y</a>; const h = <html
+//                      ^^^^^^^^ identifier.attribute KNOWN-GAP
+    suppressHydrationWarning
+//  ^^^^^^^^^^^^^^^^^^^^^^^^ identifier.attribute KNOWN-GAP
+  />;
