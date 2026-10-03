@@ -97,3 +97,17 @@
   );
   const fn = (a: Arg): Ret => a;
 //               ^^^ type KNOWN-GAP
+
+  // Union and intersection members on lines of their own.
+  type Check =
+    | $ZodCheckLessThan
+//    ^^^^^^^^^^^^^^^^^ type
+    | errors.Issue<T>
+//           ^^^^^ type
+    & Extra;
+//    ^^^^^ type
+  ok = a
+    || b
+//     ^ default
+    && c;
+//     ^ default

@@ -33,6 +33,9 @@ rules:
     - type: "\\bsatisfies\\s+((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
     # A type alias's right-hand side: `type K = A | B.C`, `type U = | A | B`
     - type: "\\btype\\s+[A-Za-z_$][A-Za-z0-9_$]*\\s*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>\\s*)?=\\s*\\|?\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
+    # Members on lines of their own: `  | A`, `  & B`. `||` and `&&` can't
+    # match: a name must follow the first `|` or `&`.
+    - type: "^\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*(\\s*[|&]\\s*((keyof|typeof|readonly|unique)\\s+)?[A-Za-z_$][A-Za-z0-9_$.]*(<([^<>]|<([^<>]|<[^<>]*>)*>)*>)?(\\[\\])*)*"
     # Clear the names before the colon, and the value after `typeof`.
     - default: "[A-Za-z_$][A-Za-z0-9_$]*\\s*[?!]?\\s*:"
     - default: "\\btypeof\\s+[A-Za-z_$][A-Za-z0-9_$.]*"
