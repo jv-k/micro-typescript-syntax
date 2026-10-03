@@ -101,13 +101,18 @@
   // Union and intersection members on lines of their own.
   type Check =
     | $ZodCheckLessThan
-//    ^^^^^^^^^^^^^^^^^ type
+//    ^^^^^^^^^^^^^^^^^ type KNOWN-GAP
     | errors.Issue<T>
-//           ^^^^^ type
+//           ^^^^^ type KNOWN-GAP
     & Extra;
-//    ^^^^^ type
+//    ^^^^^ type KNOWN-GAP
   ok = a
     || b
 //     ^ default
     && c;
 //     ^ default
+  ok = a
+    | b
+//    ^ default
+    & c;
+//    ^ default

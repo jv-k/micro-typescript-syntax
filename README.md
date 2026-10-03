@@ -128,6 +128,8 @@ use approximate rules:
   same.
 - The types of an arrow function that has a name, such as
   `const f = (a: A): B =>`, have no colour.
+- A union or intersection member on a line of its own has no type colour. A
+  line such as `| A` or `& B` is indistinguishable from a bitwise expression.
 - In JSX text, keywords such as `for` and `in` have the keyword colour.
 - A JSX tag directly after a word, such as `text<b>`, has no tag colour.
 - A JSX attribute without a value, such as `download`, has no attribute colour
