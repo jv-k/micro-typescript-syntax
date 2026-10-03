@@ -91,25 +91,25 @@ Install the micro-typescript-syntax plugin for the micro text editor.
 
 ## Colour scheme
 
-Each rule gives a colour group to a part of the code. A colour scheme sets the
-colour of each group.
+This plugin works with any micro colour scheme. It assigns detailed colour
+groups to TypeScript and TSX syntax. If the active scheme does not define a
+detailed group, micro uses the nearest parent group instead.
 
-The rules use subgroups to show more differences, for example
-`constant.quotes`, `statement.const` and `type.types`. The
-[mojokai](https://github.com/jv-k/micro-mojokai-colorscheme) colour scheme
-sets colours for these subgroups. If your colour scheme does not set a colour
-for a subgroup, micro uses the colour of the parent group. For example, micro
-uses the `constant` colour for `constant.quotes`.
+For example, `identifier.function.hook` falls back to
+`identifier.function`, then to `identifier`. This means that React hooks still
+have a colour in existing schemes, while schemes such as
+[mojokai](https://github.com/jv-k/micro-mojokai-colorscheme) can give them a
+distinct colour.
 
-A colour scheme can also set colours for these groups:
+Some notable groups are:
 
-| Group | Code |
-|---|---|
-| `constant.string.regex` | Regular expression literals |
-| `statement.tag` | JSX elements, for example `<div>` |
-| `type.tag` | JSX components, for example `<Layout>` |
-| `identifier.attribute` | JSX attributes |
-| `identifier.function.hook` | React hooks |
+| Syntax | Group | Fallback |
+|---|---|---|
+| Regular expression literals | `constant.string.regex` | `constant.string`, then `constant` |
+| JSX elements, for example `<div>` | `statement.tag` | `statement` |
+| JSX components, for example `<Layout>` | `type.tag` | `type` |
+| JSX attributes | `identifier.attribute` | `identifier` |
+| React hooks | `identifier.function.hook` | `identifier.function`, then `identifier` |
 
 ## Edge cases
 
