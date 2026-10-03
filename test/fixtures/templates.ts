@@ -18,3 +18,9 @@
 //                              ^^^^^ constant.string
   n = `${a({ b: { c } })}`;
 //     ^^^^^^^^^^^^^^^^^^ constant.tplLiterals.expression KNOWN-GAP
+  m = `a ${ok ? `b` : c} d`;
+//                    ^ constant.tplLiterals.expression KNOWN-GAP
+  k = `a ${
+    multiLine
+//  ^^^^^^^^^ constant.tplLiterals.expression KNOWN-GAP
+  } c`;

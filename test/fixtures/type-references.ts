@@ -91,3 +91,9 @@
 //       ^ default
 //            ^ default
 //                          ^ default
+  f(
+    token: Kind,
+//         ^^^^ type KNOWN-GAP
+  );
+  const fn = (a: Arg): Ret => a;
+//               ^^^ type KNOWN-GAP
