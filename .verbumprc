@@ -1,0 +1,8 @@
+# VerBump config. package.json is the version source (VerBump reads and bumps
+# it), and VERSION in typescript_syntax.lua is kept in lock-step.
+BUMP_FILES="typescript_syntax.lua:VERSION = \"{{version}}\""
+
+# micro's plugin manager reads repo.json, which lists every version newest
+# first, so a release adds an entry rather than bumping one. VerBump runs this
+# after its preflights and before it touches a file, and commits what it stages.
+PRE_BUMP_CMD="node scripts/add-repo-version.mjs"

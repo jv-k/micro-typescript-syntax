@@ -135,15 +135,30 @@ show, edit `dev/screenshot.tape` and the files in `dev/sample/`.
 
 ## Make a release
 
+The release script needs [VerBump](https://github.com/jv-k/VerBump). Install it
+with Homebrew first:
+
+```sh
+brew install jv-k/tap/verbump
+```
+
 To make a release, run this command on `master`:
 
 ```sh
-pnpm bump-release [patch|minor|major|X.Y.Z]
+pnpm bump-release
 ```
 
-The default is `patch`. The command changes the version in
-`typescript_syntax.lua` and adds the version to `repo.json`. Then it commits,
-tags and pushes the release. It shows the changes and asks before it starts.
+VerBump reads the commit messages and suggests the next version. To choose the
+version, add `--patch`, `--minor`, `--major` or `-v X.Y.Z`, for example
+`pnpm bump-release --minor`.
 
-To see the changes before the command makes them, run
+VerBump changes the version in `package.json` and `typescript_syntax.lua`, and
+`scripts/add-repo-version.mjs` adds the version to `repo.json`. Then VerBump
+updates `CHANGELOG.md`, commits, makes a tag, pushes to `origin`, and makes a
+GitHub release. `.verbumprc` holds this setup.
+
+To see the changes before VerBump makes them, run
 `pnpm bump-release --dry-run`.
+
+Once plugin-channel lists this plugin, add the new version to its
+`plugins/typescript_syntax.json` in a pull request.
