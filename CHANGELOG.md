@@ -1,0 +1,65 @@
+## 1.0.3 (2026-10-04)
+- chore: updated package.json, updated typescript_syntax.lua, created CHANGELOG.md, bumped 1.0.2 -> 1.0.3
+- refactor(release): use verbump for bump-release
+- chore(release): v1.0.2
+- docs(readme): clarify colour scheme fallbacks
+- docs(agents): configure engineering skills
+- fix(syntax): avoid colouring bitwise continuations as types
+- feat(syntax): colour union and intersection members on lines of their own
+- feat(syntax): colour JSX attributes that have no value
+- test(syntax): pin the template and annotation edge cases as known gaps
+- docs(spec): record gap a as closed in the common positions
+- feat(syntax): colour union and intersection type arguments of a call
+- feat(syntax): colour the right-hand side of a type alias
+- feat(syntax): colour type annotations
+- feat(syntax): colour type names after extends and implements
+- fix(syntax): show default as a plain key before a string value
+- fix(syntax): colour a method's type parameters such as lookAhead<T>(
+- docs(plan): tick the finished plans and mark the spec implemented
+- fix(syntax): keep the colour of declared names that start with $ and a keyword
+- fix(syntax): keep ternary arms at the start of a line out of the key reset
+- fix(syntax): stop matching keywords inside names with a dollar sign
+- fix(syntax): show keyword-named keys such as null: and const: as plain names
+- fix(syntax): show type as a plain name when it is a variable
+- feat(syntax): colour declared type names and type parameters
+- fix(test): count undefined and NaN keys as names in the gap report
+- docs(plan): add the plan to close gaps b, c, d and g
+- docs(contributing): explain how to refresh the gap report
+- fix(test): cache the gap corpus by commit so a changed pin downloads again
+- test(syntax): pin enum as a plain name after a dot and as a key
+- test(syntax): reject a malformed assertion line instead of reading it as code
+- test(syntax): report gaps against TypeScript's classifier
+- ci: run the rule tests on push and pull request
+- test(syntax): fail when a rule has no assertion that depends on it
+- fix(syntax): delete five rules that later rules repaint
+- test(syntax): add fixtures for every rule section
+- test(syntax): add caret-annotated fixtures and the checker
+- test(syntax): load the syntax files with micro's highlighter
+- docs(plan): add the highlight tests implementation plan
+- docs(spec): add the highlight tests and gap report design
+- fix(syntax): treat a slash after ) or ] as division
+- chore(release): v1.0.1
+- docs: add regex and ternary edge cases, unlink step and font
+- fix(dev): keep the screenshot micro config outside the repository
+- fix(release): accept only a newer X.Y.Z version
+- fix(syntax): stop arrow function types at a parameter comma
+- docs(contributing): move maintainer steps out of the README
+- docs(readme): readable title, screenshots, shorter edge cases
+- feat(dev): add pnpm screenshots for five colour schemes
+- fix(syntax): stop tsx including micro's built-in typescript syntax
+- feat(release): add pnpm bump-release
+- docs(readme): add update commands for plugin, agent and symlink installs
+- chore(plugin): add License to repo.json
+- docs(readme): link the original micro bug report and fix
+- chore(plugin): add v1.0.0 to repo.json
+- docs(readme): rewrite in simplified English, add plugin and agent install
+- feat(plugin): package the syntax files as a micro plugin
+- docs(readme): note React support, link micro bug report and fix
+- feat(syntax): highlight React and Next.js types and hooks
+- docs(readme): document tsx files, new colour groups and remaining limits
+- feat(syntax): highlight regex literals, arrow function names and JSX
+- chore(repo): drop placeholder package.json, ignore scratch files
+- docs(readme): add install, development and limitations; add ISC licence
+- fix(syntax): correct TypeScript highlighting rules
+- ✨
+
